@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rating",
+    "role",
+    "moods",
+    "color",
+    "priority",
+    "confidence",
+    "genre_normalized",
+    "similar_tracks",
+    "reasoning"
+  ],
+  "properties": {
+    "rating": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "role": {
+      "type": "string",
+      "enum": ["OPEN", "WARM", "JOURNEY", "MAIN", "PEAK", "CLOSE"]
+    },
+    "moods": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "string",
+        "enum": ["Deep", "Emotional", "Atmospheric", "Hypnotic", "Driving", "Dark", "Euphoric", "Vocal"]
+      }
+    },
+    "color": {
+      "type": "string",
+      "enum": ["Purple", "Blue", "Green", "Aqua", "Orange", "Red", "Yellow", "Pink"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["A", "B", "C"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "genre_normalized": {
+      "type": "string"
+    },
+    "similar_tracks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reasoning": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

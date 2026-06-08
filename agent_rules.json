@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "purpose": "Classify new rekordbox tracks by set dramaturgy, not just Beatport genre.",
+  "fields_to_write": ["Rating", "Color", "MyTag:Genre", "MyTag:Situation", "MyTag:Components", "MyTag:Priority"],
+  "do_not_write_by_default": ["Title", "Artist", "Label", "Year", "MetadataGenre"],
+  "set_roles": ["OPEN", "WARM", "JOURNEY", "MAIN", "PEAK", "CLOSE"],
+  "moods": ["Deep", "Emotional", "Atmospheric", "Hypnotic", "Driving", "Dark", "Euphoric", "Vocal"],
+  "priority": {
+    "A": "Would play tomorrow",
+    "B": "Good material",
+    "C": "Archive"
+  },
+  "rating_scale": {
+    "1": "Intro / utility / low-energy opening",
+    "2": "Warm-up / low-pressure groove",
+    "3": "Journey / narrative material",
+    "4": "Main-time material",
+    "5": "Peak / high-impact material"
+  },
+  "colors": {
+    "Purple": "Progressive Journey",
+    "Blue": "Emotional / Deep",
+    "Green": "Organic / Afro",
+    "Aqua": "Breaks",
+    "Orange": "Main Time",
+    "Red": "Peak Time",
+    "Yellow": "Classics",
+    "Pink": "Closing"
+  },
+  "genre_normalization": [
+    {"if_any": ["melodic house & techno", "melodic techno"], "tag": "Melodic Techno"},
+    {"if_any": ["progressive house", "progressive"], "tag": "Progressive House"},
+    {"if_any": ["afro house", "organic house"], "tag": "Afro / Organic House"},
+    {"if_any": ["organic downtempo", "downtempo"], "tag": "Organic / Downtempo"},
+    {"if_any": ["breaks", "breakbeat", "uk bass"], "tag": "Breaks"},
+    {"if_any": ["drum & bass", "dnb"], "tag": "Drum & Bass"},
+    {"if_any": ["psy-trance", "psy trance", "psy"], "tag": "Psy-Trance"},
+    {"if_any": ["hard techno"], "tag": "Hard Techno"},
+    {"if_any": ["techno", "peak time"], "tag": "Techno"},
+    {"if_any": ["indie dance", "nu disco"], "tag": "Indie Dance"},
+    {"if_any": ["electronica", "ambient"], "tag": "Electronica"},
+    {"if_any": ["minimal", "deep tech"], "tag": "Minimal / Deep Tech"},
+    {"if_any": ["trance"], "tag": "Trance"},
+    {"if_any": ["dance", "pop"], "tag": "Dance / Pop"}
+  ],
+  "role_examples": {
+    "JOURNEY": ["Rune Noire - I Swear", "Brian Cid - Daydreamer", "Guy J - Night Rescue"],
+    "MAIN": ["Simon Doty - Lay Me Down", "Marsh - All Night Long"],
+    "PEAK": ["SCRIPT - On The Low", "Massano - Destructure", "Argy - Higher Power"]
+  },
+  "web_sources": {
+    "musicbrainz": true,
+    "itunes": true,
+    "discogs_requires_token": true,
+    "beatport_search_url": true
+  },
+  "confidence_thresholds": {
+    "auto_apply_min": 0.82,
+    "review_below": 0.82,
+    "reject_below": 0.55
+  }
+}

@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Local rekordbox data - never commit a real music library database.
+*.db
+*.db-shm
+*.db-wal
+*.edb
+*.backup*
+
+# Local reports and backups.
+fresh_track_agent_report_*.json
+fresh_track_agent_report_*.csv
+set_agent_report_*.json
+set_agent_report_*.csv
+codex_track_decision_*.json
+backups/
+dbtest/
+work/
+
+# Secrets / local config.
+.env
+*.token
+*.key

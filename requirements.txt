@@ -1,0 +1,9 @@
+bidict>=0.23.1
+construct>=2.10.70
+numpy>=2.0
+packaging>=24.0
+psutil>=5.9
+pyrekordbox>=0.4.4
+python-dateutil>=2.9
+sqlalchemy>=2.0
+sqlcipher3-wheels>=0.5.7
