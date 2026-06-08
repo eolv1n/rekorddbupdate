@@ -29,8 +29,10 @@ genre field.
 
 - `rekordbox_set_agent.py` - agentic pipeline with web evidence and optional Codex review.
 - `rekordbox_fresh_track_agent.py` - simpler rule-based baseline.
+- `excel_verified_update.py` - verified Excel-table updater used for bulk Rating/Color/MyTag updates.
 - `agent_rules.json` - editable library rules.
 - `codex_track_decision.schema.json` - strict schema for Codex review output.
+- `examples/rekordbox_update_template.xlsx` - safe example workbook.
 
 ## Setup
 
@@ -75,6 +77,45 @@ python rekordbox_set_agent.py --days 30 --codex-review --apply
 ```
 
 The script creates a backup before writing.
+
+## Verified Excel Update Flow
+
+This is the saved version of the Excel workflow used to update the library from
+a workbook with fields like `Rating`, `Color`, `Genre_Normalized`,
+`Energy_Label`, `Elements`, and `Mood`.
+
+Example table:
+
+```text
+examples/rekordbox_update_template.xlsx
+```
+
+Supported columns:
+
+| Column | Meaning |
+| --- | --- |
+| `Artist` / `Исполнитель` | Match track artist |
+| `Title` / `Название дорожки` | Match track title |
+| `Rating` / `Рейтинг` | rekordbox star rating, accepts `****` or `4` |
+| `Color` | rekordbox color name |
+| `Genre_Normalized` | MyTag under `Genre`, not metadata Genre |
+| `Energy_Label` / `Set Role` | MyTag under `Situation` |
+| `Elements` | MyTag(s) under `Components` |
+| `Mood` | MyTag(s) under `Components` |
+
+Dry-run:
+
+```powershell
+python excel_verified_update.py examples\rekordbox_update_template.xlsx
+```
+
+Apply to the real rekordbox database:
+
+```powershell
+python excel_verified_update.py path\to\your_table.xlsx --apply
+```
+
+This updater does not change the metadata `Genre` field.
 
 ## Optional Environment Variables
 
