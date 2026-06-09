@@ -1,0 +1,16 @@
+.git/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.db
+*.db-shm
+*.db-wal
+*.edb
+backups/
+reports/
+work/
+.env
+*.token
+*.key

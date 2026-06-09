@@ -1,0 +1,17 @@
+services:
+  agent:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ${REKORDBOX_DB_DIR:-C:/Users/Admin/AppData/Roaming/Pioneer/rekordbox}:/rekordbox-db
+      - ./reports:/app/reports
+      - ./backups:/app/backups
+    command:
+      - --db
+      - /rekordbox-db/master.db
+      - --days
+      - ${AGENT_DAYS:-1}
+      - --limit
+      - ${AGENT_LIMIT:-20}

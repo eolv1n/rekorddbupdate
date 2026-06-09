@@ -48,6 +48,73 @@ The scripts expect access to the local rekordbox database:
 C:\Users\Admin\AppData\Roaming\Pioneer\rekordbox\master.db
 ```
 
+## Reproducible Environment
+
+The project has two supported runtime paths: a normal Windows virtual
+environment and an optional Docker environment. Use the Windows venv for direct
+rekordbox work on the host. Use Docker when you want a reproducible dependency
+set and do not want to depend on whatever `python` happens to mean in the
+current PowerShell session.
+
+### Windows venv
+
+Create `.env`, create `.venv`, and install dependencies:
+
+```powershell
+.\scripts\setup_windows.ps1
+```
+
+Run a dry-run through the pinned venv Python:
+
+```powershell
+.\scripts\run_agent.ps1 -Days 1 -Limit 20
+```
+
+Run a manually reviewed small batch:
+
+```powershell
+.\scripts\run_agent.ps1 -Days 1 -Limit 15 -Apply -ForceApply
+```
+
+The scripts read `REKORDBOX_DB_PATH` from `.env`. Copy `.env.example` to `.env`
+and edit paths/tokens there. `.env` is ignored by git.
+
+### Docker
+
+Build the image:
+
+```powershell
+docker compose build
+```
+
+Run a dry-run:
+
+```powershell
+docker compose run --rm agent
+```
+
+Run custom arguments:
+
+```powershell
+docker compose run --rm agent --db /rekordbox-db/master.db --days 1 --limit 20 --no-web
+```
+
+By default, `docker-compose.yml` mounts the rekordbox directory from
+`REKORDBOX_DB_DIR` into `/rekordbox-db`. On Windows this should point to the
+folder containing `master.db`, for example:
+
+```text
+REKORDBOX_DB_DIR=C:\Users\Admin\AppData\Roaming\Pioneer\rekordbox
+```
+
+Forward slashes are also valid on Windows and are safer in `.env` files:
+
+```text
+REKORDBOX_DB_DIR=C:/Users/Admin/AppData/Roaming/Pioneer/rekordbox
+```
+
+Close rekordbox before any Docker or Windows venv `--apply` run.
+
 ## Dry Run
 
 Create a review report for recent tracks:
