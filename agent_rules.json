@@ -20,7 +20,7 @@
   "colors": {
     "Purple": "Progressive Journey",
     "Blue": "Emotional / Deep",
-    "Green": "Organic / Afro",
+    "Green": "Organic or Afro",
     "Aqua": "Broken / leftfield breaks",
     "Orange": "Main Time / Indie Dance / club Breaks / Future House",
     "Red": "Peak Time",
@@ -30,19 +30,31 @@
   "genre_normalization": [
     {"if_any": ["melodic house & techno", "melodic techno"], "tag": "Melodic Techno"},
     {"if_any": ["progressive house", "progressive"], "tag": "Progressive House"},
-    {"if_any": ["afro house", "organic house"], "tag": "Afro / Organic House"},
+    {"if_any": ["afro house"], "tag": "Afro House"},
+    {"if_any": ["organic house"], "tag": "Organic House"},
     {"if_any": ["organic downtempo", "downtempo"], "tag": "Organic / Downtempo"},
+    {"if_any": ["deep house"], "tag": "Deep House"},
     {"if_any": ["breaks", "breakbeat", "uk bass"], "tag": "Breaks"},
     {"if_any": ["drum & bass", "dnb"], "tag": "Drum & Bass"},
     {"if_any": ["psy-trance", "psy trance", "psy"], "tag": "Psy-Trance"},
     {"if_any": ["hard techno"], "tag": "Hard Techno"},
     {"if_any": ["techno", "peak time"], "tag": "Techno"},
     {"if_any": ["indie dance", "nu disco"], "tag": "Indie Dance"},
-    {"if_any": ["future house", "bass house"], "tag": "Bass / Future House"},
-    {"if_any": ["electronica", "ambient"], "tag": "Electronica"},
-    {"if_any": ["minimal", "deep tech"], "tag": "Minimal / Deep Tech"},
+    {"if_any": ["future house"], "tag": "Future House"},
+    {"if_any": ["bass house"], "tag": "Bass House"},
+    {"if_any": ["ambient"], "tag": "Ambient"},
+    {"if_any": ["electronica"], "tag": "Electronica"},
+    {"if_any": ["minimal", "deep tech"], "tag": "Minimal"},
     {"if_any": ["trance"], "tag": "Trance"},
     {"if_any": ["dance", "pop"], "tag": "Dance / Pop"}
+  ],
+  "library_calibration": [
+    {
+      "if_any": ["boris brejcha", "fckng serious"],
+      "rating_delta": -1,
+      "max_rating": 4,
+      "reason": "In this library Boris Brejcha / FCKNG SERIOUS sits with similar melodic techno tracks, not automatic red peak."
+    }
   ],
   "role_examples": {
     "JOURNEY": ["Rune Noire - I Swear", "Brian Cid - Daydreamer", "Guy J - Night Rescue"],

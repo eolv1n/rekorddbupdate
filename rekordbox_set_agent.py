@@ -330,13 +330,22 @@ class SetClassifier:
         if "afro" in genre_l or "organic" in genre_l:
             scores["Deep"] += 1
             scores["Atmospheric"] += 1
+        if "deep house" in genre_l or "minimal" in genre_l:
+            scores["Deep"] += 2
+            scores["Hypnotic"] += 1
+        if "electronica" in genre_l or "ambient" in genre_l:
+            scores["Atmospheric"] += 2
+            scores["Deep"] += 1
         if "breaks" in genre_l:
             scores["Atmospheric"] += 1
             scores["Driving"] += 1
         if "indie dance" in genre_l:
             scores["Driving"] += 1
             scores["Hypnotic"] += 1
-        if "future house" in genre_l or "bass house" in genre_l:
+        if "future house" in genre_l:
+            scores["Driving"] += 3
+            scores["Euphoric"] += 1
+        if "bass house" in genre_l:
             scores["Driving"] += 2
             scores["Hypnotic"] += 1
 
@@ -349,19 +358,19 @@ class SetClassifier:
         reasons = []
         rating = 3
         g = genre_normalized.lower()
-        if any(token in g for token in ["hard techno", "psy-trance", "drum & bass"]):
+        if any(token in g for token in ["hard techno", "psy-trance", "drum & bass", "future house"]):
             rating += 2
             reasons.append("high intensity genre")
         elif "techno" in g:
             rating += 1
             reasons.append("techno lane")
-        elif any(token in g for token in ["indie dance", "breaks", "future house", "bass house"]):
+        elif any(token in g for token in ["indie dance", "breaks", "bass house"]):
             rating += 1
             reasons.append("club main-time lane")
-        elif any(token in g for token in ["organic", "afro", "deep"]):
+        elif any(token in g for token in ["organic", "afro", "deep house", "minimal"]):
             rating -= 1
             reasons.append("warm/deep genre lane")
-        elif "electronica" in g:
+        elif "electronica" in g or "ambient" in g:
             rating -= 2
             reasons.append("electronica/intro lane")
 
@@ -377,9 +386,18 @@ class SetClassifier:
         elif bpm and bpm <= 118:
             rating -= 1
             reasons.append("low BPM")
-        if any(token in g for token in ["indie dance", "breaks", "future house", "bass house"]) and rating > 4:
+        if any(token in g for token in ["indie dance", "breaks", "bass house"]) and rating > 4:
             rating = 4
             reasons.append("club lane capped at main-time unless reviewed as peak")
+        calibration_blob = lower_blob(view.artist, view.label, view.content.Title, genre_normalized)
+        for rule in self.rules.get("library_calibration", []):
+            if any(token in calibration_blob for token in rule.get("if_any", [])):
+                delta = int(rule.get("rating_delta", 0))
+                if delta:
+                    rating += delta
+                if "max_rating" in rule:
+                    rating = min(rating, int(rule["max_rating"]))
+                reasons.append(rule.get("reason", "library calibration matched"))
         rating = max(1, min(5, rating))
 
         if rating <= 1:
@@ -401,14 +419,20 @@ class SetClassifier:
             color = "Orange"
         elif role == "CLOSE":
             color = "Pink"
-        elif any(token in genre_normalized for token in ["Indie Dance", "Bass / Future House"]):
+        elif any(token in genre_normalized for token in ["Indie Dance", "Bass House"]):
             color = "Orange"
+        elif "Future House" in genre_normalized:
+            color = "Red" if role == "PEAK" else "Orange"
         elif "Breaks" in genre_normalized and bpm >= 128:
             color = "Orange"
         elif "Afro" in genre_normalized or "Organic" in genre_normalized:
             color = "Green"
         elif "Breaks" in genre_normalized:
             color = "Aqua"
+        elif "Deep House" in genre_normalized or "Minimal" in genre_normalized:
+            color = "Blue"
+        elif "Electronica" in genre_normalized or "Ambient" in genre_normalized:
+            color = "Blue"
         elif any(m in moods for m in ["Deep", "Emotional"]):
             color = "Blue"
         elif role == "WARM":

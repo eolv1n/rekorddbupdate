@@ -122,13 +122,20 @@ This updater does not change the metadata `Genre` field.
 ## Current Color Logic
 
 - Orange is the default main-time lane for `Indie Dance`, club-focused `Breaks`,
-  `Bass House`, and `Future House`.
+  and `Bass House`.
+- `Future House` is kept separate from `Bass House` and may be classified as
+  peak material.
+- `Afro House` and `Organic House` are separate normalized genre tags.
+- `Electronica`, `Ambient`, `Deep House`, and `Minimal` are explicit normalized
+  genre tags instead of being folded into broad catch-all groups.
 - Aqua is kept for more broken or leftfield breaks, not every Beatport `Breaks`
   track.
 - Yellow is reserved for classics and should not be assigned to `Future House`
   just because the track reads brighter than techno.
 - Metadata `Genre` is preserved. `Genre_Normalized` is written only as a MyTag
   until the normalized genre map is explicitly approved.
+- `agent_rules.json` has a `library_calibration` section for user feedback such
+  as artist/label-specific energy corrections.
 
 ## Optional Environment Variables
 
