@@ -78,6 +78,15 @@ Close rekordbox first, then run:
 python rekordbox_set_agent.py --days 30 --codex-review --apply
 ```
 
+For a small manually reviewed batch, bypass the confidence gate:
+
+```powershell
+python rekordbox_set_agent.py --days 1 --limit 15 --apply --force-apply
+```
+
+The apply summary reports how many rows were actually written and how many were
+skipped by the confidence threshold.
+
 The script creates a backup before writing.
 
 ## Verified Excel Update Flow

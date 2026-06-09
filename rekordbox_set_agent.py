@@ -734,10 +734,18 @@ def get_or_create_tag(db: Rekordbox6Database, parent_id: str, name: str, usn: in
     return tag, usn + 1
 
 
-def apply_records(db: Rekordbox6Database, index: LibraryIndex, records: list[dict[str, Any]], db_path: Path) -> Path:
+def apply_records(
+    db: Rekordbox6Database,
+    index: LibraryIndex,
+    records: list[dict[str, Any]],
+    db_path: Path,
+    apply_threshold: float,
+) -> dict[str, Any]:
     backup = make_backup(db_path)
     existing_ids = {tag.ID for tag in db.query(DjmdMyTag).all()}
     usn = next_local_usn(db)
+    applied = 0
+    skipped_low_confidence = 0
 
     parent_names = {"Genre": "Genre", "Situation": "Situation", "Components": "Components", "Priority": "Priority"}
     parents = {}
@@ -745,19 +753,23 @@ def apply_records(db: Rekordbox6Database, index: LibraryIndex, records: list[dic
         parents[key], usn = get_or_create_folder(db, name, usn, existing_ids)
 
     for rec in records:
-        if rec.get("confidence", 0) < rec.get("auto_apply_min", 0.82):
+        if rec.get("confidence", 0) < apply_threshold:
+            skipped_low_confidence += 1
             continue
         content = db.query(DjmdContent).filter(DjmdContent.ID == rec["content_id"]).first()
         if not content:
             continue
+        touched = False
         changed = False
         if content.Rating != rec["rating"]:
             content.Rating = rec["rating"]
             changed = True
+            touched = True
         color_id = index.color_ids.get(rec["color"])
         if color_id and content.ColorID != color_id:
             content.ColorID = color_id
             changed = True
+            touched = True
         if changed:
             content.rb_local_usn = usn
             content.updated_at = utc_now()
@@ -780,6 +792,7 @@ def apply_records(db: Rekordbox6Database, index: LibraryIndex, records: list[dic
                 )
                 if existing:
                     continue
+                touched = True
                 now = utc_now()
                 db.add(
                     DjmdSongMyTag(
@@ -799,8 +812,15 @@ def apply_records(db: Rekordbox6Database, index: LibraryIndex, records: list[dic
                     )
                 )
                 usn += 1
+        if touched:
+            applied += 1
     db.commit()
-    return backup
+    return {
+        "backup_dir": str(backup),
+        "apply_threshold": apply_threshold,
+        "applied": applied,
+        "skipped_low_confidence": skipped_low_confidence,
+    }
 
 
 def write_report(rows: list[dict[str, Any]], output_dir: Path) -> tuple[Path, Path]:
@@ -859,6 +879,8 @@ def main() -> int:
     parser.add_argument("--codex-timeout", type=int, default=180)
     parser.add_argument("--codex-search", action="store_true", help="Allow Codex CLI to use its native web search.")
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--apply-threshold", type=float, default=None, help="Minimum confidence for --apply.")
+    parser.add_argument("--force-apply", action="store_true", help="Apply all rows, regardless of confidence.")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
 
@@ -947,7 +969,10 @@ def main() -> int:
         "review_count": sum(1 for row in rows if row["needs_review"]),
     }
     if args.apply:
-        summary["backup_dir"] = str(apply_records(db, index, rows, args.db))
+        apply_threshold = 0.0 if args.force_apply else args.apply_threshold
+        if apply_threshold is None:
+            apply_threshold = float(rules["confidence_thresholds"]["auto_apply_min"])
+        summary.update(apply_records(db, index, rows, args.db, apply_threshold))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
