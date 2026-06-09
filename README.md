@@ -56,6 +56,8 @@ Create a review report for recent tracks:
 python rekordbox_set_agent.py --days 30 --limit 20
 ```
 
+Reports are written to `reports/` inside the project.
+
 Use Codex CLI as a reasoning reviewer:
 
 ```powershell
@@ -116,6 +118,17 @@ python excel_verified_update.py path\to\your_table.xlsx --apply
 ```
 
 This updater does not change the metadata `Genre` field.
+
+## Current Color Logic
+
+- Orange is the default main-time lane for `Indie Dance`, club-focused `Breaks`,
+  `Bass House`, and `Future House`.
+- Aqua is kept for more broken or leftfield breaks, not every Beatport `Breaks`
+  track.
+- Yellow is reserved for classics and should not be assigned to `Future House`
+  just because the track reads brighter than techno.
+- Metadata `Genre` is preserved. `Genre_Normalized` is written only as a MyTag
+  until the normalized genre map is explicitly approved.
 
 ## Optional Environment Variables
 

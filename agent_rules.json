@@ -21,10 +21,10 @@
     "Purple": "Progressive Journey",
     "Blue": "Emotional / Deep",
     "Green": "Organic / Afro",
-    "Aqua": "Breaks",
-    "Orange": "Main Time",
+    "Aqua": "Broken / leftfield breaks",
+    "Orange": "Main Time / Indie Dance / club Breaks / Future House",
     "Red": "Peak Time",
-    "Yellow": "Classics",
+    "Yellow": "Classics only, not Future House",
     "Pink": "Closing"
   },
   "genre_normalization": [
@@ -38,6 +38,7 @@
     {"if_any": ["hard techno"], "tag": "Hard Techno"},
     {"if_any": ["techno", "peak time"], "tag": "Techno"},
     {"if_any": ["indie dance", "nu disco"], "tag": "Indie Dance"},
+    {"if_any": ["future house", "bass house"], "tag": "Bass / Future House"},
     {"if_any": ["electronica", "ambient"], "tag": "Electronica"},
     {"if_any": ["minimal", "deep tech"], "tag": "Minimal / Deep Tech"},
     {"if_any": ["trance"], "tag": "Trance"},

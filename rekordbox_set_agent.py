@@ -35,10 +35,16 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parents[1]
-PYREKORDBOX_VENDOR = ROOT / "work" / "pyrekordbox_vendor"
-if PYREKORDBOX_VENDOR.exists():
-    sys.path.insert(0, str(PYREKORDBOX_VENDOR))
+PROJECT_DIR = Path(__file__).resolve().parent
+WORKSPACE_DIR = PROJECT_DIR.parents[1] if PROJECT_DIR.parent.name.lower() == "outputs" else PROJECT_DIR.parent
+for vendor_dir in (
+    PROJECT_DIR / "work" / "pyrekordbox_vendor",
+    PROJECT_DIR.parent / "work" / "pyrekordbox_vendor",
+    WORKSPACE_DIR / "work" / "pyrekordbox_vendor",
+):
+    if vendor_dir.exists():
+        sys.path.insert(0, str(vendor_dir))
+        break
 
 from pyrekordbox.db6 import (  # noqa: E402
     DjmdArtist,
@@ -56,8 +62,8 @@ from pyrekordbox.db6 import (  # noqa: E402
 DEFAULT_DB = Path(r"C:\Users\Admin\AppData\Roaming\Pioneer\rekordbox\master.db")
 DEFAULT_RULES = Path(__file__).with_name("agent_rules.json")
 CODEX_DECISION_SCHEMA = Path(__file__).with_name("codex_track_decision.schema.json")
-DEFAULT_OUTPUT_DIR = ROOT / "outputs"
-BACKUP_ROOT = ROOT / "work" / "backups"
+DEFAULT_OUTPUT_DIR = PROJECT_DIR / "reports"
+BACKUP_ROOT = PROJECT_DIR / "backups"
 USER_AGENT = "rekordbox-set-agent/0.1 (local library assistant)"
 
 
@@ -326,6 +332,13 @@ class SetClassifier:
             scores["Atmospheric"] += 1
         if "breaks" in genre_l:
             scores["Atmospheric"] += 1
+            scores["Driving"] += 1
+        if "indie dance" in genre_l:
+            scores["Driving"] += 1
+            scores["Hypnotic"] += 1
+        if "future house" in genre_l or "bass house" in genre_l:
+            scores["Driving"] += 2
+            scores["Hypnotic"] += 1
 
         ranked = [m for m, s in sorted(scores.items(), key=lambda item: (-item[1], item[0])) if s > 0]
         chosen = ranked[:2] or ["Atmospheric"]
@@ -342,6 +355,9 @@ class SetClassifier:
         elif "techno" in g:
             rating += 1
             reasons.append("techno lane")
+        elif any(token in g for token in ["indie dance", "breaks", "future house", "bass house"]):
+            rating += 1
+            reasons.append("club main-time lane")
         elif any(token in g for token in ["organic", "afro", "deep"]):
             rating -= 1
             reasons.append("warm/deep genre lane")
@@ -361,6 +377,9 @@ class SetClassifier:
         elif bpm and bpm <= 118:
             rating -= 1
             reasons.append("low BPM")
+        if any(token in g for token in ["indie dance", "breaks", "future house", "bass house"]) and rating > 4:
+            rating = 4
+            reasons.append("club lane capped at main-time unless reviewed as peak")
         rating = max(1, min(5, rating))
 
         if rating <= 1:
@@ -382,6 +401,10 @@ class SetClassifier:
             color = "Orange"
         elif role == "CLOSE":
             color = "Pink"
+        elif any(token in genre_normalized for token in ["Indie Dance", "Bass / Future House"]):
+            color = "Orange"
+        elif "Breaks" in genre_normalized and bpm >= 128:
+            color = "Orange"
         elif "Afro" in genre_normalized or "Organic" in genre_normalized:
             color = "Green"
         elif "Breaks" in genre_normalized:
@@ -577,7 +600,7 @@ def optional_codex_review(
             errors="replace",
             capture_output=True,
             timeout=timeout,
-            cwd=str(ROOT),
+            cwd=str(PROJECT_DIR),
         )
     except Exception as exc:
         return {"error": str(exc)}
