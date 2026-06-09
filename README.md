@@ -130,8 +130,11 @@ This updater does not change the metadata `Genre` field.
 
 ## Current Color Logic
 
-- Orange is the default main-time lane for `Indie Dance`, club-focused `Breaks`,
-  and `Bass House`.
+- Current color logic is experimental and must not be treated as final library
+  truth.
+- Orange is a candidate main-time lane for `Indie Dance`, club-focused `Breaks`,
+  and `Bass House`, but it should not be applied broadly until enough local
+  library examples are manually confirmed.
 - `Future House` is kept separate from `Bass House` and may be classified as
   peak material.
 - `Afro House` and `Organic House` are separate normalized genre tags.
@@ -145,6 +148,89 @@ This updater does not change the metadata `Genre` field.
   until the normalized genre map is explicitly approved.
 - `agent_rules.json` has a `library_calibration` section for user feedback such
   as artist/label-specific energy corrections.
+
+## What We Learned From The First Live Run
+
+The first real `--apply --force-apply` batch updated 14 recent tracks
+successfully, but it also exposed an important design problem: the classifier was
+still too rule-driven. It used the local library for similar-track suggestions
+and confidence, but the final `Rating` and `Color` decisions were mostly driven
+by explicit genre rules plus web evidence.
+
+That is not enough for this library. The library already has a strong internal
+language, and the agent must learn from it before writing broad changes.
+
+Important observations:
+
+- The existing database had almost no `Orange` usage before the test batch.
+- Assigning `Orange` from genre alone is unsafe.
+- `Indie Dance` in the current library is mostly `Green` with rating `3`.
+- `Breaks / Breakbeat / UK Bass` is mostly `Aqua` with rating `3`.
+- `Melodic House & Techno` is often not enough information to decide peak
+  energy. For example, Boris Brejcha / FCKNG SERIOUS should not be automatic
+  `Red / PEAK` in this library.
+- Metadata `Genre` and MyTag `Genre_Normalized` are separate concepts and
+  should remain separate until the normalized genre map is approved.
+
+Near-term rule: do not auto-apply broad genre/color changes unless the decision
+agrees with the local database prior or has been manually reviewed.
+
+## Next Technical Steps
+
+- Build a real database prior:
+  - color distribution by metadata genre, normalized genre, artist, label, BPM,
+    key, rating, and existing MyTags;
+  - nearest-neighbor examples that actually influence `Rating`, `Color`, and
+    `Set Role`;
+  - conflict detection when rules disagree with the local prior.
+- Change the classifier flow:
+  - local DB prior first;
+  - web evidence second;
+  - hand-written rules as corrections, not the main source of truth;
+  - Codex/LLM review only for disputed or low-confidence tracks.
+- Add safer apply behavior:
+  - never force broad updates by default;
+  - require review when the suggested color is rare for that genre/artist/label;
+  - report exact field changes before writing;
+  - keep rollback backups for every write.
+- Improve the feedback loop:
+  - store user corrections as training examples;
+  - update `agent_rules.json` only when a correction is reusable;
+  - keep one-off track decisions separate from general rules.
+
+## Future App Plan
+
+A dedicated local app would be more useful than running scripts directly. The
+app should act as a review and training interface for the agent.
+
+Core screens:
+
+- Fresh tracks from rekordbox.
+- Current database values: metadata genre, rating, color, MyTags, label, BPM,
+  key, and date added.
+- Agent suggestions: normalized genre, energy/rating, set role, mood, color,
+  priority, similar tracks, and explanation.
+- Review actions: accept, edit, reject, defer.
+- A conflict queue for cases where rules, web evidence, and DB prior disagree.
+- A calibration view for artist/label-specific corrections.
+- A rollback/backup view.
+
+Table workflow inside the UI:
+
+- Import selected tracks from rekordbox into an editable table.
+- Let the user edit normalized genre, rating, color, set role, mood, priority,
+  and notes in a spreadsheet-like grid.
+- Export the reviewed table back through the verified Excel update workflow.
+- Optionally export a normal `.xlsx` for manual editing outside the app.
+- Re-import a reviewed `.xlsx` and preview exact database changes before apply.
+
+Longer-term agent behavior:
+
+- Learn from accepted/rejected suggestions.
+- Prefer the user's historical library decisions over generic Beatport genres.
+- Treat color as a library-specific signal, not a universal genre mapping.
+- Use internet lookup for metadata and context, but not as the final authority
+  for set dramaturgy.
 
 ## Optional Environment Variables
 
