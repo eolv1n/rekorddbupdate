@@ -137,6 +137,34 @@ Let Codex use web search too:
 python rekordbox_set_agent.py --days 30 --limit 20 --codex-review --codex-search
 ```
 
+## Discogs API
+
+Discogs is optional but useful for release-level metadata: year, label, country,
+genre, style, master release, and remix/version context.
+
+For a personal local workflow, use a Discogs personal access token:
+
+1. Open `https://www.discogs.com/settings/developers`.
+2. Generate a personal access token.
+3. Put it in local `.env`:
+
+```env
+DISCOGS_TOKEN=your_token_here
+```
+
+The token is read from the environment and must never be committed. `.env` is
+ignored by git.
+
+The agent queries Discogs in two steps:
+
+- search `/database/search` for likely releases;
+- fetch `/releases/{id}` for fuller metadata.
+
+Discogs matches are filtered by artist/title token overlap before they are used.
+This prevents unrelated first search results from polluting genre normalization.
+Discogs should support metadata and context; it should not be the final authority
+for `Rating`, `Color`, or set dramaturgy.
+
 ## Apply To rekordbox
 
 Close rekordbox first, then run:

@@ -110,8 +110,11 @@ def parse_dt(value: Any) -> dt.datetime | None:
     return None
 
 
-def http_json(url: str, timeout: int = 12) -> dict[str, Any]:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+def http_json(url: str, timeout: int = 12, headers: dict[str, str] | None = None) -> dict[str, Any]:
+    request_headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
+    if headers:
+        request_headers.update(headers)
+    req = urllib.request.Request(url, headers=request_headers)
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         raw = resp.read().decode("utf-8", errors="replace")
     return json.loads(raw)
@@ -133,6 +136,19 @@ def clean_title(title: str) -> str:
 
 def remove_mix_suffix(title: str) -> str:
     return re.sub(r"\s*\((extended|original|club|radio|dub|instrumental).*?mix\)\s*$", "", title, flags=re.I).strip()
+
+
+def text_tokens(value: str) -> set[str]:
+    stop = {"and", "the", "feat", "ft", "original", "extended", "mix", "remix"}
+    return {token for token in re.findall(r"[a-z0-9]+", norm(value).lower()) if len(token) > 1 and token not in stop}
+
+
+def token_overlap(expected: str, candidate: str) -> float:
+    expected_tokens = text_tokens(expected)
+    if not expected_tokens:
+        return 0.0
+    candidate_tokens = text_tokens(candidate)
+    return len(expected_tokens & candidate_tokens) / len(expected_tokens)
 
 
 class WebEvidenceCollector:
@@ -217,25 +233,63 @@ class WebEvidenceCollector:
         token = os.environ.get("DISCOGS_TOKEN", "").strip()
         if not token:
             return {"hit": False, "skipped": "DISCOGS_TOKEN not set"}
+        headers = {"Authorization": f"Discogs token={token}"}
         url = "https://api.discogs.com/database/search?" + urllib.parse.urlencode(
-            {"q": f"{artist} {title}", "type": "release", "per_page": 5, "token": token}
+            {"q": f"{artist} {remove_mix_suffix(title)}", "type": "release", "per_page": 5}
         )
         try:
-            data = http_json(url)
+            data = http_json(url, headers=headers)
         except Exception as exc:
             return {"hit": False, "error": str(exc), "url": url}
         results = data.get("results", [])
         if not results:
             return {"hit": False, "url": url}
-        best = results[0]
+        scored = []
+        wanted_title = remove_mix_suffix(title)
+        for result in results:
+            candidate_title = result.get("title", "")
+            artist_score = token_overlap(artist, candidate_title)
+            title_score = token_overlap(wanted_title, candidate_title)
+            score = round((artist_score * 0.45) + (title_score * 0.55), 3)
+            scored.append((score, artist_score, title_score, result))
+        scored.sort(key=lambda item: item[0], reverse=True)
+        score, artist_score, title_score, best = scored[0]
+        if score < 0.45 or artist_score < 0.25 or title_score < 0.40:
+            return {
+                "hit": False,
+                "url": url,
+                "rejected": "low match score",
+                "best_title": best.get("title"),
+                "match_score": score,
+                "artist_score": round(artist_score, 3),
+                "title_score": round(title_score, 3),
+            }
+        release = {}
+        release_id = best.get("id")
+        if release_id:
+            release_url = f"https://api.discogs.com/releases/{release_id}"
+            try:
+                release = http_json(release_url, headers=headers)
+            except Exception as exc:
+                release = {"error": str(exc), "url": release_url}
         return {
             "hit": True,
             "url": url,
+            "release_id": release_id,
+            "resource_url": best.get("resource_url"),
+            "match_score": score,
+            "artist_score": round(artist_score, 3),
+            "title_score": round(title_score, 3),
             "title": best.get("title"),
-            "year": best.get("year"),
-            "genre": best.get("genre"),
-            "style": best.get("style"),
-            "label": best.get("label"),
+            "year": release.get("year") or best.get("year"),
+            "genre": release.get("genres") or best.get("genre"),
+            "style": release.get("styles") or best.get("style"),
+            "label": [label.get("name") for label in release.get("labels", []) if isinstance(label, dict)]
+            or best.get("label"),
+            "country": release.get("country"),
+            "released": release.get("released"),
+            "master_id": release.get("master_id"),
+            "release_error": release.get("error"),
         }
 
 
