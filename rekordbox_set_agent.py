@@ -378,8 +378,11 @@ class SetClassifier:
         if "progressive" in genre_l:
             scores["Atmospheric"] += 2
             scores["Emotional"] += 1
-        if "melodic techno" in genre_l or genre_l == "techno":
+        if genre_l == "techno" or "hard techno" in genre_l:
             scores["Driving"] += 2
+            scores["Hypnotic"] += 1
+        if "melodic techno" in genre_l:
+            scores["Atmospheric"] += 1
             scores["Hypnotic"] += 1
         if "afro" in genre_l or "organic" in genre_l:
             scores["Deep"] += 1
@@ -392,7 +395,6 @@ class SetClassifier:
             scores["Deep"] += 1
         if "breaks" in genre_l:
             scores["Atmospheric"] += 1
-            scores["Driving"] += 1
         if "indie dance" in genre_l:
             scores["Driving"] += 1
             scores["Hypnotic"] += 1
@@ -415,12 +417,21 @@ class SetClassifier:
         if any(token in g for token in ["hard techno", "psy-trance", "drum & bass", "future house"]):
             rating += 2
             reasons.append("high intensity genre")
-        elif "techno" in g:
+        elif g == "techno" or "hard techno" in g:
             rating += 1
             reasons.append("techno lane")
-        elif any(token in g for token in ["indie dance", "breaks", "bass house"]):
+        elif "melodic techno" in g:
+            reasons.append("melodic techno lane requires local-prior check")
+        elif any(token in g for token in ["indie dance", "bass house"]):
             rating += 1
             reasons.append("club main-time lane")
+        elif "breaks" in g:
+            if bpm >= 128:
+                rating += 1
+                reasons.append("fast club breaks lane")
+            else:
+                rating -= 1
+                reasons.append("low/mid BPM breaks lane")
         elif any(token in g for token in ["organic", "afro", "deep house", "minimal"]):
             rating -= 1
             reasons.append("warm/deep genre lane")
@@ -573,6 +584,8 @@ def optional_llm_review(enabled: bool, model: str, record: dict[str, Any]) -> di
     url = "https://api.openai.com/v1/responses"
     prompt = (
         "You classify DJ tracks for a specific rekordbox library. "
+        "The user's local manual corrections are stronger than generic web metadata. "
+        "Treat Beatport/iTunes/Discogs as context, not final authority. "
         "Return compact JSON with keys rating, role, moods, color, priority, confidence, reasoning. "
         "Respect the proposed allowed values and only override when evidence is strong.\n\n"
         + json.dumps(record, ensure_ascii=False, default=str)
@@ -642,6 +655,10 @@ def optional_codex_review(
             "Use 1-2 moods only.",
             "If web evidence is weak, rely on local library similarity and lower confidence.",
             "Prefer the user's dramaturgy over generic Beatport genre.",
+            "Manual examples and taste_profile in rules are high-priority calibration data.",
+            "If a color or role is rare for the local genre/artist/label, lower confidence and keep needs_review true.",
+            "Do not turn Melodic House & Techno into PEAK/Red without strong local-energy evidence.",
+            "Do not turn low/mid BPM Breaks into MAIN/Orange by default.",
         ],
     }
     prompt = (
