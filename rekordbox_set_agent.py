@@ -396,8 +396,10 @@ class SetClassifier:
         if "breaks" in genre_l:
             scores["Atmospheric"] += 1
         if "indie dance" in genre_l:
-            scores["Driving"] += 1
+            scores["Atmospheric"] += 1
             scores["Hypnotic"] += 1
+            if any(token in blob for token in ["acid", "dark", "horse", "algorithm", "braah", "nasty"]):
+                scores["Driving"] += 1
         if "future house" in genre_l:
             scores["Driving"] += 3
             scores["Euphoric"] += 1
@@ -422,9 +424,15 @@ class SetClassifier:
             reasons.append("techno lane")
         elif "melodic techno" in g:
             reasons.append("melodic techno lane requires local-prior check")
-        elif any(token in g for token in ["indie dance", "bass house"]):
+        elif "bass house" in g:
             rating += 1
             reasons.append("club main-time lane")
+        elif "indie dance" in g:
+            if bpm >= 132 or any(mood in moods for mood in ["Dark", "Driving"]):
+                rating += 1
+                reasons.append("dark/driving indie dance lane")
+            else:
+                reasons.append("indie dance journey lane")
         elif "breaks" in g:
             if bpm >= 128:
                 rating += 1
@@ -484,8 +492,15 @@ class SetClassifier:
             color = "Orange"
         elif role == "CLOSE":
             color = "Pink"
-        elif any(token in genre_normalized for token in ["Indie Dance", "Bass House"]):
+        elif "Bass House" in genre_normalized:
             color = "Orange"
+        elif "Indie Dance" in genre_normalized:
+            if "Dark" in moods or bpm >= 132:
+                color = "Red"
+            elif "Deep" in moods:
+                color = "Blue"
+            else:
+                color = "Orange"
         elif "Future House" in genre_normalized:
             color = "Red" if role == "PEAK" else "Orange"
         elif "Breaks" in genre_normalized and bpm >= 128:
