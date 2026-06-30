@@ -17,6 +17,8 @@ fresh_track_agent_report_*.json
 fresh_track_agent_report_*.csv
 set_agent_report_*.json
 set_agent_report_*.csv
+date_added_sync_report_*.json
+date_added_sync_report_*.csv
 codex_track_decision_*.json
 backups/
 dbtest/

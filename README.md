@@ -184,6 +184,28 @@ skipped by the confidence threshold.
 
 The script creates a backup before writing.
 
+## Sync Date Added From File
+
+`sync_date_added_from_file.py` synchronizes rekordbox `DateCreated` from the
+file creation date on disk (`FolderPath`). It does not change the internal
+database `created_at` timestamp. `StockDate` is also left unchanged by default
+because many tracks have harmless one-day `StockDate` differences.
+
+Dry-run:
+
+```powershell
+python sync_date_added_from_file.py
+```
+
+Apply after closing rekordbox:
+
+```powershell
+python sync_date_added_from_file.py --apply
+```
+
+The script creates a backup before writing. Use `--include-stock` only if you
+explicitly want to synchronize `StockDate` too.
+
 ## Verified Excel Update Flow
 
 This is the saved version of the Excel workflow used to update the library from
