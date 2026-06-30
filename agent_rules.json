@@ -59,6 +59,11 @@
     "Organic House can become Organic / Downtempo, Electronica, or Progressive depending on the track. Do not force all organic material to OPEN rating 1.",
     "House and Tech House should stay House/Tech House unless there is strong evidence for a more specific club lane. Do not fall back to Dance / Pop just because iTunes says Pop.",
     "Indie Dance is no longer mostly Green by default. Instrumental atmospheric Indie Dance may be Orange/JOURNEY; dark/acid/bass/techno-leaning Indie Dance may be Red; broken/acid/breaks-leaning Indie Dance may be Aqua/Blue.",
+    "Drum & Bass is not automatic Red/PEAK in this library. Vocal/emotional DnB can be Pink/MAIN TIME, deep/atmospheric DnB can be Aqua/WARM or JOURNEY, and dark/driving DnB may be Purple/MAIN TIME.",
+    "Fast Breaks around 130-132 BPM can be Orange when acid/driving/hypnotic, but vocal/atmospheric Breaks may be Blue/JOURNEY and deep Breaks may be Aqua/WARM.",
+    "Progressive House uses Purple for dark/driving/hypnotic journey or peak material; Blue is mostly deep/warm, Green can appear for hypnotic/organic-leaning journey tracks.",
+    "Melodic Techno splits by function: Drumcode/Massano/dark/driving material can be Red/PEAK, while Marsh/PIAS/vocal/deep melodic material can be Blue or Aqua and rating 2-3.",
+    "House and Deep House can be Yellow when they read as classic, piano, vocal, or main-time club material.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
     "Priority A/B/C is not stable yet. Do not require priority tags during learning batches."
   ],
@@ -116,6 +121,38 @@
     {
       "track": "Avoure, Chris Orell - Chasing Voices",
       "lesson": "122 BPM Breaks should be Aqua/rating 2/open-warm, not Orange MAIN."
+    },
+    {
+      "track": "Perfect Kombo - Revo",
+      "lesson": "132 BPM acid/driving/hypnotic Breaks can be Orange, rating 4, MAIN TIME."
+    },
+    {
+      "track": "Dylan Dylan - Do You Need Me?",
+      "lesson": "129 BPM vocal/atmospheric Breaks can be Blue, rating 3, JOURNEY rather than Orange."
+    },
+    {
+      "track": "Marsh - Mercy",
+      "lesson": "Anjunadeep melodic material with deep/emotional/atmospheric tags can be Aqua, rating 2, WARM UP."
+    },
+    {
+      "track": "Adam Beyer, Bart Skils, Massano, Doriann - Your Mind (Massano & Doriann Remix)",
+      "lesson": "Drumcode/Massano melodic techno can be Red/PEAK even at rating 3 when Dark/Driving/Female Vocal."
+    },
+    {
+      "track": "Karen Harding, Dimension - Guardian Angel",
+      "lesson": "Vocal/emotional Drum & Bass can be Pink, rating 3, MAIN TIME."
+    },
+    {
+      "track": "Rafau Etamski - So Sweet",
+      "lesson": "Deep/atmospheric/vocal Drum & Bass can be Aqua, rating 2, WARM UP."
+    },
+    {
+      "track": "Trilucid - See Through You (Tim Cullen Extended Instrumental Remix)",
+      "lesson": "House with piano/female vocal/driving main-time feeling can be Yellow, rating 3, MAIN TIME."
+    },
+    {
+      "track": "Kasper Koman - Biome (Mike Rish Remix)",
+      "lesson": "Dark/hypnotic progressive can be Purple, rating 4, with Techno/Peak flavor without becoming Red."
     }
   ],
   "role_examples": {

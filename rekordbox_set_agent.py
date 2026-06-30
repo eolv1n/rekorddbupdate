@@ -416,9 +416,15 @@ class SetClassifier:
         reasons = []
         rating = 3
         g = genre_normalized.lower()
-        if any(token in g for token in ["hard techno", "psy-trance", "drum & bass", "future house"]):
+        if any(token in g for token in ["hard techno", "psy-trance", "future house"]):
             rating += 2
             reasons.append("high intensity genre")
+        elif "drum & bass" in g:
+            if any(mood in moods for mood in ["Deep", "Emotional", "Atmospheric", "Vocal"]):
+                reasons.append("drum & bass needs mood-based local-prior check")
+            else:
+                rating += 1
+                reasons.append("driving drum & bass lane")
         elif g == "techno" or "hard techno" in g:
             rating += 1
             reasons.append("techno lane")
@@ -486,7 +492,14 @@ class SetClassifier:
 
         color = "Purple"
         color_text = self.rules["colors"]
-        if role == "PEAK":
+        if "Drum & Bass" in genre_normalized:
+            if any(mood in moods for mood in ["Emotional", "Vocal"]):
+                color = "Pink"
+            elif any(mood in moods for mood in ["Deep", "Atmospheric"]):
+                color = "Aqua"
+            else:
+                color = "Purple"
+        elif role == "PEAK":
             color = "Red"
         elif role == "MAIN":
             color = "Orange"
