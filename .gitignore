@@ -13,6 +13,7 @@ env/
 *.backup*
 
 # Local reports and backups.
+reports/
 fresh_track_agent_report_*.json
 fresh_track_agent_report_*.csv
 set_agent_report_*.json

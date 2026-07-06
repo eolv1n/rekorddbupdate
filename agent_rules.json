@@ -64,6 +64,10 @@
     "Progressive House uses Purple for dark/driving/hypnotic journey or peak material; Blue is mostly deep/warm, Green can appear for hypnotic/organic-leaning journey tracks.",
     "Melodic Techno splits by function: Drumcode/Massano/dark/driving material can be Red/PEAK, while Marsh/PIAS/vocal/deep melodic material can be Blue or Aqua and rating 2-3.",
     "House and Deep House can be Yellow when they read as classic, piano, vocal, or main-time club material.",
+    "Techno peak-time material with Acid/Dark/Driving/Hypnotic tags often sits Red/MAIN TIME at rating 3-4; not every such track needs rating 5.",
+    "Psy-Trance and Trance are not one color. Psy can be Orange MAIN TIME, Purple Journey/Peak, or Red only when it is truly peak-time. Vocal/emotional Trance can be Blue even when MAIN TIME.",
+    "Organic/Afro material with female vocal and peak/journey tension can become Orange/PEAK instead of Green.",
+    "Downtempo and beatless/chillout mixes should be OPEN / INTRO even when BPM metadata is misleading.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
     "Priority A/B/C is not stable yet. Do not require priority tags during learning batches."
   ],
@@ -153,6 +157,46 @@
     {
       "track": "Kasper Koman - Biome (Mike Rish Remix)",
       "lesson": "Dark/hypnotic progressive can be Purple, rating 4, with Techno/Peak flavor without becoming Red."
+    },
+    {
+      "track": "Laidback Luke, Jonathan Mendelsohn - Till Tonight (Ferry Corsten Fix)",
+      "lesson": "Vocal Trance at 130 BPM can be Red, rating 3, MAIN TIME when it is driving and female-vocal-led."
+    },
+    {
+      "track": "Aly & Fila, Jwaydan - We Control The Sunlight",
+      "lesson": "Emotional/female vocal Trance can be Blue, rating 4, MAIN TIME rather than automatic Red."
+    },
+    {
+      "track": "Reborn, Zyce - Colors & Patterns",
+      "lesson": "Psy-Trance with acid/dark/driving/hypnotic journey tags can be Orange, rating 3, MAIN TIME."
+    },
+    {
+      "track": "Astral Projection - Let There Be Light",
+      "lesson": "Classic-feeling Psy-Trance can be Purple, rating 4, Journey/Acid/Dark/Hypnotic instead of Red."
+    },
+    {
+      "track": "Teenage Mutants, Kos:mo - Caught Up",
+      "lesson": "Peak-time Techno can be Red MAIN TIME at rating 3 when Acid/Dark/Driving/Vocal."
+    },
+    {
+      "track": "Tinlicker, Hero Baldwin - God In You",
+      "lesson": "PIAS melodic/vocal material can be Blue, rating 3, PEAK/Trance/Melodic Techno when emotional and female-vocal-led."
+    },
+    {
+      "track": "Miss Monique, Glowal - Lost On A Dancefloor",
+      "lesson": "Siona melodic/indie material with Acid/Dark/Driving/Vocal can be Orange MAIN TIME/PEAK, not necessarily Red."
+    },
+    {
+      "track": "CamelPhat, Josh Gigante, Kuuda - So Good (Kuuda Chillout Mix)",
+      "lesson": "Chillout/downtempo mixes can be Green, rating 1, OPEN / INTRO with Electronica/Organic Downtempo tags despite misleading BPM."
+    },
+    {
+      "track": "Eleonora, Ilias Katelanos, Plecta - Lose Control",
+      "lesson": "Organic/Afro female-vocal hypnotic journey material can be Orange and PEAK."
+    },
+    {
+      "track": "High One - Waraome",
+      "lesson": "Dark/acid/hypnotic Drum & Bass peak material can be Orange, rating 3, PEAK."
     }
   ],
   "role_examples": {
