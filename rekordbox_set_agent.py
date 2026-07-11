@@ -416,9 +416,12 @@ class SetClassifier:
         reasons = []
         rating = 3
         g = genre_normalized.lower()
-        if any(token in g for token in ["hard techno", "psy-trance", "future house"]):
+        if any(token in g for token in ["hard techno", "future house"]):
             rating += 2
             reasons.append("high intensity genre")
+        elif "psy-trance" in g:
+            rating += 1
+            reasons.append("psy-trance is energetic but not red/peak by default")
         elif "drum & bass" in g:
             if any(mood in moods for mood in ["Deep", "Emotional", "Atmospheric", "Vocal"]):
                 reasons.append("drum & bass needs mood-based local-prior check")
@@ -468,6 +471,9 @@ class SetClassifier:
         if any(token in g for token in ["indie dance", "breaks", "bass house"]) and rating > 4:
             rating = 4
             reasons.append("club lane capped at main-time unless reviewed as peak")
+        if any(token in g for token in ["organic", "afro"]) and rating > 4:
+            rating = 4
+            reasons.append("organic/afro capped below peak; orange is allowed but peak is not default")
         calibration_blob = lower_blob(view.artist, view.label, view.content.Title, genre_normalized)
         for rule in self.rules.get("library_calibration", []):
             if any(token in calibration_blob for token in rule.get("if_any", [])):
@@ -499,6 +505,13 @@ class SetClassifier:
                 color = "Aqua"
             else:
                 color = "Purple"
+        elif "Psy-Trance" in genre_normalized:
+            if any(mood in moods for mood in ["Dark", "Driving", "Hypnotic"]):
+                color = "Orange"
+            else:
+                color = "Purple"
+        elif "Afro" in genre_normalized or "Organic" in genre_normalized:
+            color = "Orange" if role == "MAIN" or any(mood in moods for mood in ["Driving", "Hypnotic"]) else "Green"
         elif role == "PEAK":
             color = "Red"
         elif role == "MAIN":
@@ -518,8 +531,6 @@ class SetClassifier:
             color = "Red" if role == "PEAK" else "Orange"
         elif "Breaks" in genre_normalized and bpm >= 128:
             color = "Orange"
-        elif "Afro" in genre_normalized or "Organic" in genre_normalized:
-            color = "Green"
         elif "Breaks" in genre_normalized:
             color = "Aqua"
         elif "Deep House" in genre_normalized or "Minimal" in genre_normalized:

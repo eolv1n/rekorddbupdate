@@ -20,6 +20,8 @@ learning signal starts on 2026-07-01.
 - Psy-Trance can be Orange MAIN TIME when it is acid/dark/driving/hypnotic but
   still not the absolute peak.
 - Classic-feeling or journey Psy-Trance can be Purple.
+- Do not learn Red as the default Psy-Trance lane. The user's correction is
+  that psy is generally not about Red in this library.
 
 Examples:
 
@@ -46,16 +48,17 @@ Examples:
 
 ### Melodic / Vocal Material
 
-- PIAS melodic/vocal tracks can be Blue with PEAK or MAIN TIME tags when they
-  are emotional/female-vocal-led.
-- Siona/Miss Monique-style dark melodic material can be Orange MAIN TIME/PEAK
-  instead of automatic Red.
+- PIAS melodic/vocal tracks can be Blue when they are emotional/female-vocal-led.
+- Siona/Miss Monique-style dark melodic material can be Orange MAIN TIME instead
+  of automatic Red.
+- Removed cleanup conflicts should not be learned as taste: rating 1-2 with
+  PEAK/MAIN TIME, and WARM UP with Red, were corrected by the user.
 
 Examples:
 
-- Tinlicker, Hero Baldwin - God In You: Blue, rating 3, PEAK, Female Vocal,
-  Emotional, Melodic Techno/Trance.
-- Miss Monique, Glowal - Lost On A Dancefloor: Orange, rating 3, MAIN TIME/PEAK,
+- Tinlicker, Hero Baldwin - God In You: Blue, rating 3, Female Vocal,
+  Emotional, Melodic Techno/Trance; PEAK with rating 3 should be reviewed.
+- Miss Monique, Glowal - Lost On A Dancefloor: Orange, rating 3, MAIN TIME,
   Acid/Dark/Driving/Vocal.
 
 ### Downtempo / Opening
@@ -88,10 +91,19 @@ Examples:
 ### Organic / Afro
 
 - Organic/Afro with female vocal and hypnotic/journey tension can become Orange
-  PEAK instead of Green.
+  instead of Green.
+- Organic/Afro is not a PEAK lane by default; Orange here is a color/vibe
+  decision, not a peak-energy decision.
 
 Example:
 
-- Eleonora, Ilias Katelanos, Plecta - Lose Control: Orange, rating 3, PEAK,
-  Afro / Organic House, Female Vocal, Hypnotic, Journey.
+- Eleonora, Ilias Katelanos, Plecta - Lose Control: Orange, rating 3,
+  Afro / Organic House, Female Vocal, Hypnotic, Journey; PEAK should be treated
+  as review/cleanup if it appears on this type of track.
 
+### Progressive House
+
+- Progressive House can be very different from track to track in this library.
+- A wide spread of colors or roles is not suspicious by itself; it should be
+  judged by mood, energy, and neighboring examples rather than forced into one
+  narrow lane.

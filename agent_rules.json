@@ -53,7 +53,7 @@
   "taste_profile": [
     "Local database taste is the primary authority. Web genres and Beatport metadata are supporting evidence only.",
     "Do not map rare colors broadly. Orange is now accepted for a subset of Indie Dance, but it usually remains rating 3 / JOURNEY rather than automatic MAIN.",
-    "Progressive House is usually a journey lane. Prefer Purple for atmospheric/driving journey material; use Blue mostly for clearly deep/emotional warm material.",
+    "Progressive House is intentionally broad in this library. Do not treat its spread across Purple, Blue, Green, Orange, or Red-adjacent roles as a contradiction; decide from track function, mood, and neighboring library examples.",
     "Melodic House & Techno is not automatically peak. Ben Böhmer-style melodic remixes and deep melodic material can be WARM/JOURNEY with Aqua/Blue/Purple rather than Red.",
     "Breaks around 122 BPM often belongs to Aqua, rating 2, warm/open/journey. Do not make low-BPM breaks Orange MAIN by default.",
     "Organic House can become Organic / Downtempo, Electronica, or Progressive depending on the track. Do not force all organic material to OPEN rating 1.",
@@ -65,8 +65,9 @@
     "Melodic Techno splits by function: Drumcode/Massano/dark/driving material can be Red/PEAK, while Marsh/PIAS/vocal/deep melodic material can be Blue or Aqua and rating 2-3.",
     "House and Deep House can be Yellow when they read as classic, piano, vocal, or main-time club material.",
     "Techno peak-time material with Acid/Dark/Driving/Hypnotic tags often sits Red/MAIN TIME at rating 3-4; not every such track needs rating 5.",
-    "Psy-Trance and Trance are not one color. Psy can be Orange MAIN TIME, Purple Journey/Peak, or Red only when it is truly peak-time. Vocal/emotional Trance can be Blue even when MAIN TIME.",
-    "Organic/Afro material with female vocal and peak/journey tension can become Orange/PEAK instead of Green.",
+    "Psy-Trance should generally not become Red in this library. Use Purple for classic/journey psy and Orange for acid/dark/driving main-time psy; Red is not the meaning of this lane.",
+    "Organic/Afro material can become Orange when it is hypnotic, driving, or main-time leaning, but it should not become PEAK by default.",
+    "Do not learn removed cleanup conflicts as taste: rating 1-2 with PEAK/MAIN TIME and WARM UP with Red should be treated as stale artifacts unless the current database still confirms them.",
     "Downtempo and beatless/chillout mixes should be OPEN / INTRO even when BPM metadata is misleading.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
     "Priority A/B/C is not stable yet. Do not require priority tags during learning batches."
@@ -168,7 +169,7 @@
     },
     {
       "track": "Reborn, Zyce - Colors & Patterns",
-      "lesson": "Psy-Trance with acid/dark/driving/hypnotic journey tags can be Orange, rating 3, MAIN TIME."
+      "lesson": "Psy-Trance with acid/dark/driving/hypnotic journey tags can be Orange, rating 3, MAIN TIME; do not turn psy into Red by default."
     },
     {
       "track": "Astral Projection - Let There Be Light",
@@ -180,11 +181,11 @@
     },
     {
       "track": "Tinlicker, Hero Baldwin - God In You",
-      "lesson": "PIAS melodic/vocal material can be Blue, rating 3, PEAK/Trance/Melodic Techno when emotional and female-vocal-led."
+      "lesson": "PIAS melodic/vocal material can be Blue, rating 3, Trance/Melodic Techno when emotional and female-vocal-led; PEAK with rating 3 should be reviewed, not learned blindly."
     },
     {
       "track": "Miss Monique, Glowal - Lost On A Dancefloor",
-      "lesson": "Siona melodic/indie material with Acid/Dark/Driving/Vocal can be Orange MAIN TIME/PEAK, not necessarily Red."
+      "lesson": "Siona melodic/indie material with Acid/Dark/Driving/Vocal can be Orange MAIN TIME, not necessarily Red; PEAK with rating 3 should be reviewed."
     },
     {
       "track": "CamelPhat, Josh Gigante, Kuuda - So Good (Kuuda Chillout Mix)",
@@ -192,7 +193,7 @@
     },
     {
       "track": "Eleonora, Ilias Katelanos, Plecta - Lose Control",
-      "lesson": "Organic/Afro female-vocal hypnotic journey material can be Orange and PEAK."
+      "lesson": "Organic/Afro female-vocal hypnotic journey material can be Orange, but should remain below PEAK unless explicitly re-confirmed."
     },
     {
       "track": "High One - Waraome",
