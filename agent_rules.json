@@ -62,6 +62,10 @@
     "Drum & Bass is not automatic Red/PEAK in this library. Vocal/emotional DnB can be Pink/MAIN TIME, deep/atmospheric DnB can be Aqua/WARM or JOURNEY, and dark/driving DnB may be Purple/MAIN TIME.",
     "Fast Breaks around 130-132 BPM can be Orange when acid/driving/hypnotic, but vocal/atmospheric Breaks may be Blue/JOURNEY and deep Breaks may be Aqua/WARM.",
     "Progressive House uses Purple for dark/driving/hypnotic journey or peak material; Blue is mostly deep/warm, Green can appear for hypnotic/organic-leaning journey tracks.",
+    "Color and Rating are independent signals. Blue can carry rating 3-4 MAIN TIME when the track is emotional, vocal, melodic, or trance-leaning; do not force it toward Orange or Red only because energy rises.",
+    "Purple can carry rating 4 and MAIN TIME/PEAK for dark, hypnotic, acid, or psychedelic Progressive House while remaining a progressive journey rather than Red peak-time techno.",
+    "Orange describes a clubby, acid, indie, psychedelic, or broken-beat character and is not an automatic high Rating. Orange tracks can remain rating 2-3 and WARM/JOURNEY when that is their dramatic function.",
+    "Green is a restrained organic/deep lane, not a synonym for low quality or OPEN. It can hold rating 2-3 WARM/JOURNEY when the track develops the set without becoming dark or club-forward.",
     "Melodic Techno splits by function: Drumcode/Massano/dark/driving material can be Red/PEAK, while Marsh/PIAS/vocal/deep melodic material can be Blue or Aqua and rating 2-3.",
     "House and Deep House can be Yellow when they read as classic, piano, vocal, or main-time club material.",
     "Techno peak-time material with Acid/Dark/Driving/Hypnotic tags often sits Red/MAIN TIME at rating 3-4; not every such track needs rating 5.",
@@ -93,7 +97,7 @@
     },
     {
       "track": "Audiojack, Kevin Knapp - This Frequency",
-      "lesson": "House on Crosstown Rebels should remain House; vocal/driving/deep, Yellow, rating 3, PEAK in user's current tagging."
+      "lesson": "House on Crosstown Rebels should remain House. Current manual tagging is Yellow, rating 2, WARM UP with deep/driving/vocal character; the older rating 3 / PEAK example is stale and must not be learned."
     },
     {
       "track": "Durante, Ezequiel Arias - Logical",
@@ -198,6 +202,26 @@
     {
       "track": "High One - Waraome",
       "lesson": "Dark/acid/hypnotic Drum & Bass peak material can be Orange, rating 3, PEAK."
+    },
+    {
+      "track": "Estiva - The Wave",
+      "lesson": "Emotional, female-vocal Progressive/Trance can be Blue, rating 3, MAIN TIME even when it is clearly driving."
+    },
+    {
+      "track": "Julian Nates - Echoes of Another Life",
+      "lesson": "Acid/dark/hypnotic Progressive House can stay Purple at rating 4 with MAIN TIME/PEAK roles; Purple is allowed to carry the progressive peak without becoming Red."
+    },
+    {
+      "track": "Sébastien Léger, Lost Miracle - Mistily",
+      "lesson": "Psychedelic/acid Organic-Progressive material can be Orange, rating 2, JOURNEY. Orange describes character here, not peak energy."
+    },
+    {
+      "track": "Fahlberg - The Shift",
+      "lesson": "Indie-leaning melodic material can be Orange, rating 3, while remaining WARM/JOURNEY instead of automatic MAIN TIME."
+    },
+    {
+      "track": "Borowsky, Lilova, ETNE - Flower",
+      "lesson": "Emotional female-vocal Breaks can be Blue, rating 4, MAIN TIME; high energy alone does not make broken-beat material Orange or Red."
     }
   ],
   "role_examples": {

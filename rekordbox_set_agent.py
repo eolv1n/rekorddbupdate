@@ -695,6 +695,7 @@ def optional_codex_review(
             "If web evidence is weak, rely on local library similarity and lower confidence.",
             "Prefer the user's dramaturgy over generic Beatport genre.",
             "Manual examples and taste_profile in rules are high-priority calibration data.",
+            "Treat Rating as energy/function and Color as sonic lane; do not derive either field mechanically from the other.",
             "If a color or role is rare for the local genre/artist/label, lower confidence and keep needs_review true.",
             "Do not turn Melodic House & Techno into PEAK/Red without strong local-energy evidence.",
             "Do not turn low/mid BPM Breaks into MAIN/Orange by default.",
