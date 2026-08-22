@@ -11,20 +11,20 @@
     "C": "Archive"
   },
   "rating_scale": {
-    "1": "Intro / utility / low-energy opening",
-    "2": "Warm-up / low-pressure groove",
-    "3": "Journey / narrative material",
-    "4": "Main-time material",
-    "5": "Peak / high-impact material"
+    "1": "Very low intensity / utility / atmospheric",
+    "2": "Restrained or low-pressure intensity",
+    "3": "Medium intensity",
+    "4": "High intensity",
+    "5": "Maximum intensity; reserved and rare"
   },
   "colors": {
-    "Purple": "Progressive Journey",
-    "Blue": "Emotional / Deep",
-    "Green": "Organic or Afro",
-    "Aqua": "Broken / leftfield breaks",
-    "Orange": "Main Time / Indie Dance / club Breaks / Future House",
-    "Red": "Peak Time",
-    "Yellow": "Classics only, not Future House",
+    "Purple": "Progressive / hypnotic / trance journey",
+    "Blue": "Emotional / deep / melodic",
+    "Green": "Organic / restrained progressive",
+    "Aqua": "Broken / leftfield / emotional breaks / ambient",
+    "Orange": "Indie / acid / club breaks / Future House crossover",
+    "Red": "Dark peak-pressure sonic lane",
+    "Yellow": "House / piano / classic club language; not generic Future House",
     "Pink": "Closing"
   },
   "genre_normalization": [
@@ -66,12 +66,18 @@
     "Purple can carry rating 4 and MAIN TIME/PEAK for dark, hypnotic, acid, or psychedelic Progressive House while remaining a progressive journey rather than Red peak-time techno.",
     "Orange describes a clubby, acid, indie, psychedelic, or broken-beat character and is not an automatic high Rating. Orange tracks can remain rating 2-3 and WARM/JOURNEY when that is their dramatic function.",
     "Green is a restrained organic/deep lane, not a synonym for low quality or OPEN. It can hold rating 2-3 WARM/JOURNEY when the track develops the set without becoming dark or club-forward.",
+    "Rating, Set Role, and Color are three independent decisions. Rating is intensity, Set Role is dramatic placement, and Color is sonic lane. Unusual combinations are allowed when current manual examples support them.",
+    "Fresh 2026-08-22 corrections confirm that Red/MAIN or Red/PEAK can deliberately carry rating 2 for dark bass-heavy Melodic Techno or Indie Dance. Treat this as a review-sensitive pattern, not an automatic cleanup error.",
+    "Blue can carry the full intensity range. Emotional or vocal Trance can be Blue at rating 3-5 and MAIN TIME; energy must not force it into Red.",
+    "Aqua can carry PEAK when high-BPM Breaks remain emotional, melodic, or leftfield. BPM and role must not force emotional Breaks into Orange.",
+    "Yellow is now a stable House lane across WARM, JOURNEY, and MAIN TIME at ratings 2-4, especially for piano, vocal, deep, or classic club language.",
+    "Purple can describe warm Breaks, hypnotic Progressive, journey Psy-Trance, or emotional Trance MAIN TIME. It is a sonic family rather than a fixed energy level.",
     "Melodic Techno splits by function: Drumcode/Massano/dark/driving material can be Red/PEAK, while Marsh/PIAS/vocal/deep melodic material can be Blue or Aqua and rating 2-3.",
     "House and Deep House can be Yellow when they read as classic, piano, vocal, or main-time club material.",
     "Techno peak-time material with Acid/Dark/Driving/Hypnotic tags often sits Red/MAIN TIME at rating 3-4; not every such track needs rating 5.",
     "Psy-Trance should generally not become Red in this library. Use Purple for classic/journey psy and Orange for acid/dark/driving main-time psy; Red is not the meaning of this lane.",
     "Organic/Afro material can become Orange when it is hypnotic, driving, or main-time leaning, but it should not become PEAK by default.",
-    "Do not learn removed cleanup conflicts as taste: rating 1-2 with PEAK/MAIN TIME and WARM UP with Red should be treated as stale artifacts unless the current database still confirms them.",
+    "Do not auto-clean low Rating with MAIN/PEAK. The 2026-08-22 batch confirms some such combinations. Flag only when the sonic lane and neighboring examples do not support the role; WARM UP with Red remains suspicious unless manually confirmed.",
     "Downtempo and beatless/chillout mixes should be OPEN / INTRO even when BPM metadata is misleading.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
     "Priority A/B/C is not stable yet. Do not require priority tags during learning batches."
@@ -222,6 +228,34 @@
     {
       "track": "Borowsky, Lilova, ETNE - Flower",
       "lesson": "Emotional female-vocal Breaks can be Blue, rating 4, MAIN TIME; high energy alone does not make broken-beat material Orange or Red."
+    },
+    {
+      "track": "OceanLab, Above & Beyond - Satellite",
+      "lesson": "Emotional female-vocal Trance can be Blue at rating 5 and MAIN TIME. Maximum intensity does not override the emotional color lane."
+    },
+    {
+      "track": "Adriatique, Emmit Fenn, GENESI - Closer",
+      "lesson": "Dark bass-heavy Melodic Techno can be Red, rating 2, PEAK. Rating and dramatic role are intentionally independent in the current manual model."
+    },
+    {
+      "track": "Glowal, Massano - Future Generation",
+      "lesson": "Dark/hypnotic Indie-Melodic Techno can be Red, rating 2, PEAK; do not auto-clean the combination only because Rating is low."
+    },
+    {
+      "track": "Jon Gurd, Reset Robot - Akura",
+      "lesson": "High-BPM emotional female-vocal Breaks/Electronica can be Aqua, rating 3, PEAK rather than automatic Orange."
+    },
+    {
+      "track": "JUNO, Alex Wann - Allo",
+      "lesson": "Dark/deep/hypnotic Afro-Organic Indie Dance can be Orange, rating 2, WARM UP. Orange is a crossover character, not a MAIN-only color."
+    },
+    {
+      "track": "Mark Knight, Cristoph - Yebisah",
+      "lesson": "Emotional female-vocal House can be Yellow, rating 4, MAIN TIME; Yellow remains the House lane at high intensity."
+    },
+    {
+      "track": "Olly Klars - Full Moon (Framewerk Breaks Edit)",
+      "lesson": "Dark progressive Breaks can be Purple, rating 2, WARM UP when they feel like a hypnotic journey rather than club-pressure Orange."
     }
   ],
   "role_examples": {
@@ -229,6 +263,23 @@
     "MAIN": ["Simon Doty - Lay Me Down", "Marsh - All Night Long"],
     "PEAK": ["SCRIPT - On The Low", "Massano - Destructure", "Argy - Higher Power"]
   },
+  "set_construction_profile": [
+    "Prioritize narrative and mood over a perfectly continuous Camelot path. Harmonic compatibility is important, but it may be broken deliberately at a dramatic reset.",
+    "Place an emotional or lyrical anchor near the opening instead of delaying all vocal material until MAIN TIME; Marsh - Home was manually inserted at position 2 in playlist 101.",
+    "A low-intensity organic track can work as a mid-set breath after a darker progression; it does not have to remain in the opening block.",
+    "Build MAIN TIME through emotional Progressive/Trance as well as dark pressure. The user added Durante - Lunar Circuit and Victor Garde - Feel Your Touch to strengthen this transition.",
+    "The closing section can alternate Blue emotional and Purple hypnotic material, then release into a lower-rating emotional track. Maximum intensity is not required at the end."
+  ],
+  "negative_set_examples": [
+    {
+      "track": "DAVI - Self R3B00T",
+      "lesson": "Removed by the user from the proposed playlist 101 as outside the intended set narrative. Do not select for the same progressive-emotional lane without new evidence."
+    },
+    {
+      "track": "Rafael Cerato - Pink P",
+      "lesson": "Removed by the user from the proposed playlist 101 as outside the intended set narrative. Red/main-time metadata alone is not enough for selection."
+    }
+  ],
   "web_sources": {
     "musicbrainz": true,
     "itunes": true,

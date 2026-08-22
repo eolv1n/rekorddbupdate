@@ -133,12 +133,21 @@ def score_track(content: Any, artist: str, genre: str, label: str, key: str, col
     reasons: list[str] = []
     score = 0
 
-    if rating <= 2 and tag_has(tags, "PEAK", "MAIN", "MAIN TIME"):
-        score += 100
-        reasons.append("low rating with PEAK/MAIN role")
-    if rating <= 2 and color == "Red":
-        score += 100
-        reasons.append("low rating with Red color")
+    low_rating_role_supported = any_text(
+        blob,
+        "dark",
+        "hypnotic",
+        "acid",
+        "bass house",
+        "melodic techno",
+        "indie dance",
+    )
+    if rating <= 2 and tag_has(tags, "PEAK", "MAIN", "MAIN TIME") and not low_rating_role_supported:
+        score += 55
+        reasons.append("low rating with MAIN/PEAK lacks a supporting dark/club lane")
+    if rating <= 2 and color == "Red" and not low_rating_role_supported:
+        score += 55
+        reasons.append("low rating with Red lacks a supporting dark/club lane")
     if color == "Red" and tag_has(tags, "OPEN", "OPEN / INTRO", "WARM", "WARM UP"):
         score += 95
         reasons.append("Red color with OPEN/WARM role")
@@ -184,7 +193,10 @@ def score_track(content: Any, artist: str, genre: str, label: str, key: str, col
     if rating == 0 and (color or tags):
         score += 25
         reasons.append("has color/tags but no rating")
-    if rating >= 5 and color not in {"Red", "Orange"}:
+    high_rating_emotional_supported = color in {"Blue", "Aqua"} and any_text(
+        blob, "emotional", "female vocal", "trance", "breaks", "electronica"
+    )
+    if rating >= 5 and color not in {"Red", "Orange"} and not high_rating_emotional_supported:
         score += 30
         reasons.append("rating 5 outside Red/Orange")
 
