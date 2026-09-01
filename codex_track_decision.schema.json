@@ -9,6 +9,7 @@
     "priority",
     "confidence",
     "genre_normalized",
+    "genre_tags",
     "similar_tracks",
     "reasoning"
   ],
@@ -46,6 +47,14 @@
     },
     "genre_normalized": {
       "type": "string"
+    },
+    "genre_tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
     },
     "similar_tracks": {
       "type": "array",

@@ -263,6 +263,9 @@ This updater does not change the metadata `Genre` field.
   just because the track reads brighter than techno.
 - Metadata `Genre` is preserved. `Genre_Normalized` is written only as a MyTag
   until the normalized genre map is explicitly approved.
+- Codex decisions may return one to three `genre_tags` for genuine crossover
+  tracks. The first remains `genre_normalized`; apply mode links every returned
+  value under Rekordbox MyTag `Genre`.
 - `agent_rules.json` has a `library_calibration` section for user feedback such
   as artist/label-specific energy corrections.
 

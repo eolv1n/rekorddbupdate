@@ -564,7 +564,8 @@ def key_family(key: str) -> str:
 def similar_tracks(target: TrackContext, predicted: dict[str, Any], library: list[TrackContext], limit: int) -> list[dict[str, Any]]:
     target_bpm = bpm_value(target.content)
     target_key = key_family(target.key)
-    desired = set(predicted["moods"]) | {predicted["role"], predicted["genre_normalized"]}
+    genre_tags = predicted.get("genre_tags") or [predicted["genre_normalized"]]
+    desired = set(predicted["moods"]) | {predicted["role"], *genre_tags}
     scored = []
     for other in library:
         if other.content.ID == target.content.ID:
@@ -577,7 +578,7 @@ def similar_tracks(target: TrackContext, predicted: dict[str, Any], library: lis
             score += bpm_score
             if bpm_score >= 18:
                 reasons.append("close BPM")
-        if predicted["genre_normalized"] in other.tags or predicted["genre_normalized"].lower() in other.genre.lower():
+        if any(tag in other.tags or tag.lower() in other.genre.lower() for tag in genre_tags):
             score += 25
             reasons.append("same lane")
         overlap = desired & other.tags
@@ -691,6 +692,8 @@ def optional_codex_review(
         "instructions": [
             "Return only JSON matching the schema.",
             "Do not change metadata Genre; genre_normalized means MyTag:Genre.",
+            "Return genre_tags with 1-3 useful MyTag:Genre values. genre_normalized must equal the first and primary genre_tags value.",
+            "Use multiple genre_tags only for a real crossover supported by audio, reliable release evidence, or strong local examples.",
             "Use 1-2 moods only.",
             "If web evidence is weak, rely on local library similarity and lower confidence.",
             "Prefer the user's dramaturgy over generic Beatport genre.",
@@ -889,7 +892,7 @@ def apply_records(
             usn += 1
 
         desired = {
-            "Genre": [rec["genre_normalized"]],
+            "Genre": rec.get("genre_tags") or [rec["genre_normalized"]],
             "Situation": [rec["role"]],
             "Components": rec["moods"],
             "Priority": [rec["priority"]],
@@ -948,6 +951,7 @@ def write_report(rows: list[dict[str, Any]], output_dir: Path) -> tuple[Path, Pa
         "artist",
         "title",
         "genre_normalized",
+        "genre_tags",
         "rating",
         "role",
         "moods",
@@ -966,6 +970,7 @@ def write_report(rows: list[dict[str, Any]], output_dir: Path) -> tuple[Path, Pa
             writer.writerow(
                 {
                     **{field: row.get(field) for field in fields},
+                    "genre_tags": ", ".join(row.get("genre_tags") or [row["genre_normalized"]]),
                     "moods": ", ".join(row["moods"]),
                     "similar_tracks": " | ".join(
                         f"{item['artist']} - {item['title']} ({item['score']})" for item in row["similar_tracks"]
@@ -1010,7 +1015,12 @@ def main() -> int:
         genre_normalized, genre_reasons = classifier.normalize_genre(view, evidence)
         moods, mood_reasons = classifier.moods(view, genre_normalized, evidence)
         rating, role, color, energy_reasons = classifier.rating_role_color(view, genre_normalized, moods)
-        predicted = {"genre_normalized": genre_normalized, "moods": moods, "role": role}
+        predicted = {
+            "genre_normalized": genre_normalized,
+            "genre_tags": [genre_normalized],
+            "moods": moods,
+            "role": role,
+        }
         similar = similar_tracks(view, predicted, index.views, args.similar_limit)
         conf = confidence(evidence, similar, genre_reasons + mood_reasons + energy_reasons)
         priority = classifier.priority(rating, role, similar[0]["score"] if similar else 0, conf)
@@ -1024,6 +1034,7 @@ def main() -> int:
             "bpm": round(bpm_value(view.content), 2),
             "key": view.key,
             "genre_normalized": genre_normalized,
+            "genre_tags": [genre_normalized],
             "rating": rating,
             "role": role,
             "moods": moods,
@@ -1050,6 +1061,7 @@ def main() -> int:
         if codex_result:
             record["baseline_decision"] = {
                 "genre_normalized": record["genre_normalized"],
+                "genre_tags": record["genre_tags"],
                 "rating": record["rating"],
                 "role": record["role"],
                 "moods": record["moods"],
@@ -1060,9 +1072,21 @@ def main() -> int:
             }
             record["codex_review"] = codex_result
             if "error" not in codex_result:
-                for key in ("genre_normalized", "rating", "role", "moods", "color", "priority", "confidence"):
+                for key in (
+                    "genre_normalized",
+                    "genre_tags",
+                    "rating",
+                    "role",
+                    "moods",
+                    "color",
+                    "priority",
+                    "confidence",
+                ):
                     if key in codex_result:
                         record[key] = codex_result[key]
+                genre_tags = list(dict.fromkeys(record.get("genre_tags") or [record["genre_normalized"]]))
+                record["genre_tags"] = genre_tags[:3]
+                record["genre_normalized"] = record["genre_tags"][0]
                 if "reasoning" in codex_result:
                     record["reasoning"] = codex_result["reasoning"]
                 record["needs_review"] = record["confidence"] < rules["confidence_thresholds"]["auto_apply_min"]

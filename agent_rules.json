@@ -77,6 +77,11 @@
     "Techno peak-time material with Acid/Dark/Driving/Hypnotic tags often sits Red/MAIN TIME at rating 3-4; not every such track needs rating 5.",
     "Psy-Trance should generally not become Red in this library. Use Purple for classic/journey psy and Orange for acid/dark/driving main-time psy; Red is not the meaning of this lane.",
     "Organic/Afro material can become Orange when it is hypnotic, driving, or main-time leaning, but it should not become PEAK by default.",
+    "A source or embedded genre is only evidence. If the rhythm is clearly broken, keep Breaks as a normalized MyTag and allow the metadata genre to be corrected separately after listening; do not force a 4x4 lane from the release label alone.",
+    "Emotional Progressive/Trance crossovers can carry both Progressive House and Trance MyTags while staying Blue at MAIN TIME. Multiple genre tags are useful when they describe real neighboring lanes rather than uncertainty.",
+    "Low-pressure broken-beat versions can be Aqua and rating 1 even when the artist or label usually maps to Purple progressive. Track-level rhythm and intensity override artist priors.",
+    "Indie/Melodic Techno crossovers can be Orange while retaining both Indie Dance and Melodic Techno MyTags. Red is reserved for darker pressure; melodic-techno metadata alone is insufficient.",
+    "Do not infer Instrumental from a dub/remix suffix or missing web credits. Female Vocal and Vocal must be decided from the audio or reliable release evidence.",
     "Do not auto-clean low Rating with MAIN/PEAK. The 2026-08-22 batch confirms some such combinations. Flag only when the sonic lane and neighboring examples do not support the role; WARM UP with Red remains suspicious unless manually confirmed.",
     "Downtempo and beatless/chillout mixes should be OPEN / INTRO even when BPM metadata is misleading.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
@@ -256,6 +261,26 @@
     {
       "track": "Olly Klars - Full Moon (Framewerk Breaks Edit)",
       "lesson": "Dark progressive Breaks can be Purple, rating 2, WARM UP when they feel like a hypnotic journey rather than club-pressure Orange."
+    },
+    {
+      "track": "My Friend, Darla Jade - Flash (Jesabel Extended Remix)",
+      "lesson": "High-energy emotional vocal Trance/Progressive crossover can be Blue, rating 4, MAIN TIME with both Trance and Progressive House MyTags. Energy does not force this remix into Red."
+    },
+    {
+      "track": "Boxer - Verde (Jerome Isma-Ae Extended Remix)",
+      "lesson": "Driving and hypnotic Progressive House can still be Blue, rating 3, JOURNEY when its melodic/vocal character dominates. The user replaced Instrumental with Vocal."
+    },
+    {
+      "track": "Tribal Saints - Perfect Love (Framewerk Dub Remix)",
+      "lesson": "This is metadata Genre Breaks and Aqua, rating 2, JOURNEY with Breaks/Deep/Hypnotic/Female Vocal. A Framewerk dub is not automatically Purple progressive, and Dub does not imply Instrumental."
+    },
+    {
+      "track": "Glowal - Believe In Your Body",
+      "lesson": "Melodic Techno can be an Orange Indie Dance crossover at rating 3 MAIN TIME. Keep both Melodic Techno and Indie Dance MyTags when the track has dark/driving/hypnotic club character; Piano is a useful distinguishing component."
+    },
+    {
+      "track": "Massane - Shadows",
+      "lesson": "The user identified the actual track as low-intensity Breaks: metadata Genre Breaks, Aqua, rating 1, JOURNEY, with both Breaks and Progressive House MyTags plus Atmospheric/Breaks/Female Vocal. Track-level rhythm overrides the artist's usual progressive prior."
     }
   ],
   "role_examples": {
