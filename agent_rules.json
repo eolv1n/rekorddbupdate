@@ -1,7 +1,8 @@
 {
   "version": 1,
   "purpose": "Classify new rekordbox tracks by the user's set dramaturgy and local library taste, not just Beatport genre.",
-  "fields_to_write": ["Rating", "Color", "MyTag:Genre", "MyTag:Situation", "MyTag:Components", "MyTag:Priority"],
+  "fields_to_write": ["Rating", "Color", "MyTag:Genre", "MyTag:Situation", "MyTag:Components"],
+  "experimental_fields": ["MyTag:Priority"],
   "do_not_write_by_default": ["Title", "Artist", "Label", "Year", "MetadataGenre"],
   "set_roles": ["OPEN", "WARM", "JOURNEY", "MAIN", "PEAK", "CLOSE"],
   "moods": ["Deep", "Emotional", "Atmospheric", "Hypnotic", "Driving", "Dark", "Euphoric", "Vocal"],
@@ -85,7 +86,10 @@
     "Do not auto-clean low Rating with MAIN/PEAK. The 2026-08-22 batch confirms some such combinations. Flag only when the sonic lane and neighboring examples do not support the role; WARM UP with Red remains suspicious unless manually confirmed.",
     "Downtempo and beatless/chillout mixes should be OPEN / INTRO even when BPM metadata is misleading.",
     "Classic vocal club remixes may be Yellow or Red and tagged as Techno/House/Classic depending on energy; treat them as special cases for review.",
-    "Priority A/B/C is not stable yet. Do not require priority tags during learning batches."
+    "Priority A/B/C is not stable yet. Do not require priority tags during learning batches.",
+    "Atmospheric Progressive House must not default to Blue. When established artist neighbors such as Supacooks, M.O.S., Khen, Juan Deminicis, or Nicolas Rada sit in the classic progressive journey lane, prefer Purple unless the specific track has clear deep, vocal, or emotional evidence for Blue.",
+    "Low-energy Electronica and ambient-adjacent material belongs to Aqua/OPEN more often than Blue when its main function is leftfield set opening rather than deep melodic warm-up.",
+    "Breaks intensity must be judged track by track. A 123 BPM vocal breakbeat track can be Aqua, rating 3, JOURNEY; broken rhythm does not imply rating 1-2. Credited vocalists are strong evidence for Vocal and, when verified, Female Vocal."
   ],
   "library_calibration": [
     {
@@ -281,6 +285,22 @@
     {
       "track": "Massane - Shadows",
       "lesson": "The user identified the actual track as low-intensity Breaks: metadata Genre Breaks, Aqua, rating 1, JOURNEY, with both Breaks and Progressive House MyTags plus Atmospheric/Breaks/Female Vocal. Track-level rhythm overrides the artist's usual progressive prior."
+    },
+    {
+      "track": "Supacooks - Floating Around (Paul AR Remix)",
+      "lesson": "Use the established Supacooks progressive lane: Purple, rating 3, JOURNEY. Atmospheric or emotional wording alone is not enough to move this kind of classic Progressive House to Blue."
+    },
+    {
+      "track": "Hot Since 82, Lydia Kaye - Another Life",
+      "lesson": "Vocal Breaks at 123 BPM can be Aqua, rating 3, JOURNEY with Breaks/Deep/Atmospheric/Vocal/Female Vocal. Do not reduce it to OPEN/rating 1 from broken rhythm alone."
+    },
+    {
+      "track": "Avoure - XXI",
+      "lesson": "Low-energy Electronica can be Aqua, rating 1, OPEN / INTRO with Atmospheric/Deep/Instrumental; Aqua describes its leftfield opening function better than generic Blue."
+    },
+    {
+      "track": "Hessian, Courtney Storm - Heartbeat (Estiva Remix)",
+      "lesson": "Emotional female-vocal Progressive House can be Blue, rating 3, JOURNEY. Here the vocal and emotional evidence justifies Blue despite Estiva's many Purple progressive neighbors."
     }
   ],
   "role_examples": {

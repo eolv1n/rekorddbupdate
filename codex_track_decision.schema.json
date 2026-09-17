@@ -5,6 +5,7 @@
     "rating",
     "role",
     "moods",
+    "component_tags",
     "color",
     "priority",
     "confidence",
@@ -30,6 +31,33 @@
       "items": {
         "type": "string",
         "enum": ["Deep", "Emotional", "Atmospheric", "Hypnotic", "Driving", "Dark", "Euphoric", "Vocal"]
+      }
+    },
+    "component_tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Vocal",
+          "Piano",
+          "Dark",
+          "Atmospheric",
+          "Driving",
+          "Peak",
+          "Instrumental",
+          "Female Vocal",
+          "Afro",
+          "Organic",
+          "Deep",
+          "Journey",
+          "Breaks",
+          "Emotional",
+          "Acid",
+          "Hypnotic",
+          "Psychedelic"
+        ]
       }
     },
     "color": {

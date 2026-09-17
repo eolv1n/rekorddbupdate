@@ -179,8 +179,15 @@ For a small manually reviewed batch, bypass the confidence gate:
 python rekordbox_set_agent.py --days 1 --limit 15 --apply --force-apply
 ```
 
+Priority `A/B/C` is still experimental and is not written by default. Add
+`--apply-priority` only when that layer is ready to become part of the library.
+
 The apply summary reports how many rows were actually written and how many were
 skipped by the confidence threshold.
+
+Candidate discovery only returns tracks inside the requested date window that
+still lack a Situation tag, Rating, or Color. Already completed fresh tracks are
+not reviewed again on the next run.
 
 The script creates a backup before writing.
 
@@ -266,6 +273,11 @@ This updater does not change the metadata `Genre` field.
 - Codex decisions may return one to three `genre_tags` for genuine crossover
   tracks. The first remains `genre_normalized`; apply mode links every returned
   value under Rekordbox MyTag `Genre`.
+- Codex decisions return `component_tags` separately from the compact mood
+  summary, allowing real MyTags such as `Female Vocal`, `Instrumental`,
+  `Breaks`, `Piano`, `Organic`, and `Journey` to survive apply mode.
+- Internal roles are mapped to the existing Rekordbox names (`OPEN / INTRO`,
+  `WARM UP`, `MAIN TIME`) instead of creating duplicate Situation tags.
 - `agent_rules.json` has a `library_calibration` section for user feedback such
   as artist/label-specific energy corrections.
 

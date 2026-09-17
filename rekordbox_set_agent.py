@@ -65,6 +65,14 @@ CODEX_DECISION_SCHEMA = Path(__file__).with_name("codex_track_decision.schema.js
 DEFAULT_OUTPUT_DIR = PROJECT_DIR / "reports"
 BACKUP_ROOT = PROJECT_DIR / "backups"
 USER_AGENT = "rekordbox-set-agent/0.1 (local library assistant)"
+ROLE_MYTAGS = {
+    "OPEN": "OPEN / INTRO",
+    "WARM": "WARM UP",
+    "JOURNEY": "JOURNEY",
+    "MAIN": "MAIN TIME",
+    "PEAK": "PEAK",
+    "CLOSE": "CLOSE",
+}
 
 
 @dataclass
@@ -331,13 +339,24 @@ class LibraryIndex:
 
     def candidates(self, days: int, limit: int) -> list[TrackContext]:
         cutoff = utc_now() - dt.timedelta(days=days) if days > 0 else None
-        managed_tags = {"OPEN", "WARM", "JOURNEY", "MAIN", "PEAK", "CLOSE", "A", "B", "C"}
+        managed_tags = {
+            "OPEN / INTRO",
+            "WARM UP",
+            "JOURNEY",
+            "MAIN TIME",
+            "PEAK",
+            "CLOSE",
+            # Keep recognizing tags written by older agent versions.
+            "OPEN",
+            "WARM",
+            "MAIN",
+        }
         rows = []
         for view in self.views:
             created = parse_dt(view.content.created_at) or parse_dt(view.content.DateCreated)
             fresh = bool(cutoff and created and created >= cutoff)
-            untagged = not (view.tags & managed_tags)
-            if fresh or untagged:
+            incomplete = not (view.tags & managed_tags) or not view.content.Rating or not view.color
+            if incomplete and (cutoff is None or fresh):
                 rows.append(view)
         rows.sort(key=lambda view: str(view.content.created_at or ""), reverse=True)
         return rows[:limit] if limit else rows
@@ -565,7 +584,8 @@ def similar_tracks(target: TrackContext, predicted: dict[str, Any], library: lis
     target_bpm = bpm_value(target.content)
     target_key = key_family(target.key)
     genre_tags = predicted.get("genre_tags") or [predicted["genre_normalized"]]
-    desired = set(predicted["moods"]) | {predicted["role"], *genre_tags}
+    components = predicted.get("component_tags") or predicted["moods"]
+    desired = set(components) | {predicted["role"], *genre_tags}
     scored = []
     for other in library:
         if other.content.ID == target.content.ID:
@@ -695,6 +715,8 @@ def optional_codex_review(
             "Return genre_tags with 1-3 useful MyTag:Genre values. genre_normalized must equal the first and primary genre_tags value.",
             "Use multiple genre_tags only for a real crossover supported by audio, reliable release evidence, or strong local examples.",
             "Use 1-2 moods only.",
+            "Return component_tags with 1-6 exact Rekordbox Components values. Include specific evidence-backed tags such as Female Vocal, Instrumental, Breaks, Piano, Organic, or Journey in addition to the 1-2 high-level moods.",
+            "Do not infer Instrumental from a remix or dub suffix. Use Female Vocal only with reliable vocal evidence.",
             "If web evidence is weak, rely on local library similarity and lower confidence.",
             "Prefer the user's dramaturgy over generic Beatport genre.",
             "Manual examples and taste_profile in rules are high-priority calibration data.",
@@ -713,8 +735,10 @@ def optional_codex_review(
 
     output_path = DEFAULT_OUTPUT_DIR / f"codex_track_decision_{record['content_id']}.json"
     codex_bin = "codex.cmd" if os.name == "nt" else "codex"
-    cmd = [
-        codex_bin,
+    cmd = [codex_bin]
+    if use_search:
+        cmd.append("--search")
+    cmd.extend([
         "exec",
         "--skip-git-repo-check",
         "--ephemeral",
@@ -724,11 +748,9 @@ def optional_codex_review(
         str(CODEX_DECISION_SCHEMA),
         "--output-last-message",
         str(output_path),
-    ]
+    ])
     if model:
         cmd.extend(["--model", model])
-    if use_search:
-        cmd.append("--search")
     cmd.append("-")
 
     try:
@@ -856,6 +878,7 @@ def apply_records(
     records: list[dict[str, Any]],
     db_path: Path,
     apply_threshold: float,
+    apply_priority: bool = False,
 ) -> dict[str, Any]:
     backup = make_backup(db_path)
     existing_ids = {tag.ID for tag in db.query(DjmdMyTag).all()}
@@ -863,7 +886,9 @@ def apply_records(
     applied = 0
     skipped_low_confidence = 0
 
-    parent_names = {"Genre": "Genre", "Situation": "Situation", "Components": "Components", "Priority": "Priority"}
+    parent_names = {"Genre": "Genre", "Situation": "Situation", "Components": "Components"}
+    if apply_priority:
+        parent_names["Priority"] = "Priority"
     parents = {}
     for key, name in parent_names.items():
         parents[key], usn = get_or_create_folder(db, name, usn, existing_ids)
@@ -893,10 +918,11 @@ def apply_records(
 
         desired = {
             "Genre": rec.get("genre_tags") or [rec["genre_normalized"]],
-            "Situation": [rec["role"]],
-            "Components": rec["moods"],
-            "Priority": [rec["priority"]],
+            "Situation": [ROLE_MYTAGS.get(rec["role"], rec["role"])],
+            "Components": rec.get("component_tags") or rec["moods"],
         }
+        if apply_priority:
+            desired["Priority"] = [rec["priority"]]
         for parent_key, names in desired.items():
             parent = parents[parent_key]
             for name in names:
@@ -955,6 +981,7 @@ def write_report(rows: list[dict[str, Any]], output_dir: Path) -> tuple[Path, Pa
         "rating",
         "role",
         "moods",
+        "component_tags",
         "color",
         "priority",
         "confidence",
@@ -972,6 +999,7 @@ def write_report(rows: list[dict[str, Any]], output_dir: Path) -> tuple[Path, Pa
                     **{field: row.get(field) for field in fields},
                     "genre_tags": ", ".join(row.get("genre_tags") or [row["genre_normalized"]]),
                     "moods": ", ".join(row["moods"]),
+                    "component_tags": ", ".join(row.get("component_tags") or row["moods"]),
                     "similar_tracks": " | ".join(
                         f"{item['artist']} - {item['title']} ({item['score']})" for item in row["similar_tracks"]
                     ),
@@ -999,6 +1027,11 @@ def main() -> int:
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--apply-threshold", type=float, default=None, help="Minimum confidence for --apply.")
     parser.add_argument("--force-apply", action="store_true", help="Apply all rows, regardless of confidence.")
+    parser.add_argument(
+        "--apply-priority",
+        action="store_true",
+        help="Also write experimental Priority A/B/C MyTags. Disabled by default.",
+    )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
 
@@ -1019,6 +1052,7 @@ def main() -> int:
             "genre_normalized": genre_normalized,
             "genre_tags": [genre_normalized],
             "moods": moods,
+            "component_tags": moods,
             "role": role,
         }
         similar = similar_tracks(view, predicted, index.views, args.similar_limit)
@@ -1038,6 +1072,7 @@ def main() -> int:
             "rating": rating,
             "role": role,
             "moods": moods,
+            "component_tags": moods,
             "color": color,
             "priority": priority,
             "similar_tracks": similar,
@@ -1065,6 +1100,7 @@ def main() -> int:
                 "rating": record["rating"],
                 "role": record["role"],
                 "moods": record["moods"],
+                "component_tags": record["component_tags"],
                 "color": record["color"],
                 "priority": record["priority"],
                 "confidence": record["confidence"],
@@ -1078,6 +1114,7 @@ def main() -> int:
                     "rating",
                     "role",
                     "moods",
+                    "component_tags",
                     "color",
                     "priority",
                     "confidence",
@@ -1087,6 +1124,9 @@ def main() -> int:
                 genre_tags = list(dict.fromkeys(record.get("genre_tags") or [record["genre_normalized"]]))
                 record["genre_tags"] = genre_tags[:3]
                 record["genre_normalized"] = record["genre_tags"][0]
+                record["component_tags"] = list(
+                    dict.fromkeys(record.get("component_tags") or record["moods"])
+                )[:6]
                 if "reasoning" in codex_result:
                     record["reasoning"] = codex_result["reasoning"]
                 record["needs_review"] = record["confidence"] < rules["confidence_thresholds"]["auto_apply_min"]
@@ -1109,7 +1149,7 @@ def main() -> int:
         apply_threshold = 0.0 if args.force_apply else args.apply_threshold
         if apply_threshold is None:
             apply_threshold = float(rules["confidence_thresholds"]["auto_apply_min"])
-        summary.update(apply_records(db, index, rows, args.db, apply_threshold))
+        summary.update(apply_records(db, index, rows, args.db, apply_threshold, args.apply_priority))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
