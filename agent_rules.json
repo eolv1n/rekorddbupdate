@@ -89,7 +89,10 @@
     "Priority A/B/C is not stable yet. Do not require priority tags during learning batches.",
     "Atmospheric Progressive House must not default to Blue. When established artist neighbors such as Supacooks, M.O.S., Khen, Juan Deminicis, or Nicolas Rada sit in the classic progressive journey lane, prefer Purple unless the specific track has clear deep, vocal, or emotional evidence for Blue.",
     "Low-energy Electronica and ambient-adjacent material belongs to Aqua/OPEN more often than Blue when its main function is leftfield set opening rather than deep melodic warm-up.",
-    "Breaks intensity must be judged track by track. A 123 BPM vocal breakbeat track can be Aqua, rating 3, JOURNEY; broken rhythm does not imply rating 1-2. Credited vocalists are strong evidence for Vocal and, when verified, Female Vocal."
+    "Breaks intensity must be judged track by track. A 123 BPM vocal breakbeat track can be Aqua, rating 3, JOURNEY; broken rhythm does not imply rating 1-2. Credited vocalists are strong evidence for Vocal and, when verified, Female Vocal.",
+    "Older library metadata may come from automatic tagging without the present rules. Give explicit user corrections and recent reviewed examples more weight than an older rating or color, including an exact-title duplicate.",
+    "Atmospheric or emotional wording alone does not prove a Blue progressive lane. When track-level vocal or deep melodic evidence is absent, prefer the established Purple journey lane for artists such as Makebo, Ilias Katelanos, Plecta, and Cristoph at rating 3.",
+    "A 120 BPM Deep House track should not fall to rating 1 OPEN solely from a Deep genre or subdued title. Use rating 2 WARM unless track-specific evidence supports beatless or utility opening material."
   ],
   "library_calibration": [
     {
@@ -301,6 +304,18 @@
     {
       "track": "Hessian, Courtney Storm - Heartbeat (Estiva Remix)",
       "lesson": "Emotional female-vocal Progressive House can be Blue, rating 3, JOURNEY. Here the vocal and emotional evidence justifies Blue despite Estiva's many Purple progressive neighbors."
+    },
+    {
+      "track": "Oliver Lieb, L.S.G. - Netherworld (Oliver Prime Remix) (2025 remaster)",
+      "lesson": "Reviewed as Trance plus Progressive House, Purple, rating 4, MAIN TIME. An older 2019 copy carried Red/rating 5 from automatic tagging without the current rules and must not be copied as a taste preference."
+    },
+    {
+      "track": "Makebo - Balance",
+      "lesson": "Reviewed as Purple, rating 3, JOURNEY. Atmospheric and emotional labels alone were too weak to move this classic progressive material to Blue."
+    },
+    {
+      "track": "Astova Planet - East Dance",
+      "lesson": "Reviewed as Deep House, Blue, rating 2, WARM UP. The previous OPEN/rating 1 suggestion lacked evidence of beatless or utility opening material."
     }
   ],
   "role_examples": {
